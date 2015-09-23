@@ -7,13 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DC2760841BB0B12600664212 /* DeviceDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2760831BB0B12600664212 /* DeviceDetailsViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		DC2760861BB1A53D00664212 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2760851BB1A53D00664212 /* IntroViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		DC2760871BB1A72B00664212 /* DeviceDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2760831BB0B12600664212 /* DeviceDetailsViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		DC2760881BB1A72C00664212 /* DeviceDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2760831BB0B12600664212 /* DeviceDetailsViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		DC27608A1BB212AF00664212 /* BlooToothDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2760891BB212AF00664212 /* BlooToothDevice.swift */; settings = {ASSET_TAGS = (); }; };
+		DC27608B1BB212B200664212 /* BlooToothDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2760891BB212AF00664212 /* BlooToothDevice.swift */; settings = {ASSET_TAGS = (); }; };
+		DC27608C1BB212B200664212 /* BlooToothDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2760891BB212AF00664212 /* BlooToothDevice.swift */; settings = {ASSET_TAGS = (); }; };
 		DCC516111B74E4D40097F3B9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC516101B74E4D40097F3B9 /* AppDelegate.swift */; };
-		DCC516131B74E4D40097F3B9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC516121B74E4D40097F3B9 /* ViewController.swift */; };
 		DCC516161B74E4D40097F3B9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCC516141B74E4D40097F3B9 /* Main.storyboard */; };
 		DCC516181B74E4D40097F3B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCC516171B74E4D40097F3B9 /* Assets.xcassets */; };
 		DCC5161B1B74E4D40097F3B9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCC516191B74E4D40097F3B9 /* LaunchScreen.storyboard */; };
 		DCC516261B74E4D40097F3B9 /* BlooToothTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC516251B74E4D40097F3B9 /* BlooToothTests.swift */; };
 		DCC516311B74E4D40097F3B9 /* BlooToothUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC516301B74E4D40097F3B9 /* BlooToothUITests.swift */; };
+		DCC5163F1B74EF570097F3B9 /* DevicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC5163E1B74EF570097F3B9 /* DevicesTableViewController.swift */; };
+		DCC516401B74EF570097F3B9 /* DevicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC5163E1B74EF570097F3B9 /* DevicesTableViewController.swift */; };
+		DCC516411B74EF570097F3B9 /* DevicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC5163E1B74EF570097F3B9 /* DevicesTableViewController.swift */; };
+		DCC516431B74EFE70097F3B9 /* DevicesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC516421B74EFE70097F3B9 /* DevicesDataSource.swift */; };
+		DCC516441B74EFE70097F3B9 /* DevicesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC516421B74EFE70097F3B9 /* DevicesDataSource.swift */; };
+		DCC516451B74EFE70097F3B9 /* DevicesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC516421B74EFE70097F3B9 /* DevicesDataSource.swift */; };
+		DCC516471B74EFFD0097F3B9 /* BlooToothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC516461B74EFFD0097F3B9 /* BlooToothManager.swift */; };
+		DCC516481B74EFFD0097F3B9 /* BlooToothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC516461B74EFFD0097F3B9 /* BlooToothManager.swift */; };
+		DCC516491B74EFFD0097F3B9 /* BlooToothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC516461B74EFFD0097F3B9 /* BlooToothManager.swift */; };
+		DCDA490E1B7A8FBB0059F3F1 /* DeviceServicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA490D1B7A8FBB0059F3F1 /* DeviceServicesTableViewController.swift */; };
+		DCDA490F1B7A8FBB0059F3F1 /* DeviceServicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA490D1B7A8FBB0059F3F1 /* DeviceServicesTableViewController.swift */; };
+		DCDA49101B7A8FBB0059F3F1 /* DeviceServicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA490D1B7A8FBB0059F3F1 /* DeviceServicesTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,9 +52,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DC2760831BB0B12600664212 /* DeviceDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceDetailsViewController.swift; sourceTree = "<group>"; };
+		DC2760851BB1A53D00664212 /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
+		DC2760891BB212AF00664212 /* BlooToothDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlooToothDevice.swift; sourceTree = "<group>"; };
 		DCC5160D1B74E4D40097F3B9 /* BlooTooth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlooTooth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCC516101B74E4D40097F3B9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		DCC516121B74E4D40097F3B9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		DCC516151B74E4D40097F3B9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DCC516171B74E4D40097F3B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DCC5161A1B74E4D40097F3B9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -47,6 +67,10 @@
 		DCC5162C1B74E4D40097F3B9 /* BlooToothUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlooToothUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCC516301B74E4D40097F3B9 /* BlooToothUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlooToothUITests.swift; sourceTree = "<group>"; };
 		DCC516321B74E4D40097F3B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DCC5163E1B74EF570097F3B9 /* DevicesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevicesTableViewController.swift; sourceTree = "<group>"; };
+		DCC516421B74EFE70097F3B9 /* DevicesDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevicesDataSource.swift; sourceTree = "<group>"; };
+		DCC516461B74EFFD0097F3B9 /* BlooToothManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlooToothManager.swift; sourceTree = "<group>"; };
+		DCDA490D1B7A8FBB0059F3F1 /* DeviceServicesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceServicesTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,7 +122,13 @@
 			isa = PBXGroup;
 			children = (
 				DCC516101B74E4D40097F3B9 /* AppDelegate.swift */,
-				DCC516121B74E4D40097F3B9 /* ViewController.swift */,
+				DCC516461B74EFFD0097F3B9 /* BlooToothManager.swift */,
+				DC2760891BB212AF00664212 /* BlooToothDevice.swift */,
+				DCC516421B74EFE70097F3B9 /* DevicesDataSource.swift */,
+				DC2760831BB0B12600664212 /* DeviceDetailsViewController.swift */,
+				DCC5163E1B74EF570097F3B9 /* DevicesTableViewController.swift */,
+				DCDA490D1B7A8FBB0059F3F1 /* DeviceServicesTableViewController.swift */,
+				DC2760851BB1A53D00664212 /* IntroViewController.swift */,
 				DCC516141B74E4D40097F3B9 /* Main.storyboard */,
 				DCC516171B74E4D40097F3B9 /* Assets.xcassets */,
 				DCC516191B74E4D40097F3B9 /* LaunchScreen.storyboard */,
@@ -192,6 +222,7 @@
 				TargetAttributes = {
 					DCC5160C1B74E4D40097F3B9 = {
 						CreatedOnToolsVersion = 7.0;
+						DevelopmentTeam = U47EA53RZE;
 					};
 					DCC516201B74E4D40097F3B9 = {
 						CreatedOnToolsVersion = 7.0;
@@ -255,8 +286,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DCC516131B74E4D40097F3B9 /* ViewController.swift in Sources */,
+				DCC516431B74EFE70097F3B9 /* DevicesDataSource.swift in Sources */,
+				DCDA490E1B7A8FBB0059F3F1 /* DeviceServicesTableViewController.swift in Sources */,
+				DC27608A1BB212AF00664212 /* BlooToothDevice.swift in Sources */,
+				DC2760861BB1A53D00664212 /* IntroViewController.swift in Sources */,
 				DCC516111B74E4D40097F3B9 /* AppDelegate.swift in Sources */,
+				DC2760841BB0B12600664212 /* DeviceDetailsViewController.swift in Sources */,
+				DCC516471B74EFFD0097F3B9 /* BlooToothManager.swift in Sources */,
+				DCC5163F1B74EF570097F3B9 /* DevicesTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,7 +301,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DCC516441B74EFE70097F3B9 /* DevicesDataSource.swift in Sources */,
+				DCDA490F1B7A8FBB0059F3F1 /* DeviceServicesTableViewController.swift in Sources */,
+				DCC516401B74EF570097F3B9 /* DevicesTableViewController.swift in Sources */,
+				DC2760871BB1A72B00664212 /* DeviceDetailsViewController.swift in Sources */,
+				DCC516481B74EFFD0097F3B9 /* BlooToothManager.swift in Sources */,
 				DCC516261B74E4D40097F3B9 /* BlooToothTests.swift in Sources */,
+				DC27608B1BB212B200664212 /* BlooToothDevice.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,7 +315,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DCC516451B74EFE70097F3B9 /* DevicesDataSource.swift in Sources */,
+				DCDA49101B7A8FBB0059F3F1 /* DeviceServicesTableViewController.swift in Sources */,
+				DCC516411B74EF570097F3B9 /* DevicesTableViewController.swift in Sources */,
+				DC2760881BB1A72C00664212 /* DeviceDetailsViewController.swift in Sources */,
+				DCC516491B74EFFD0097F3B9 /* BlooToothManager.swift in Sources */,
 				DCC516311B74E4D40097F3B9 /* BlooToothUITests.swift in Sources */,
+				DC27608C1BB212B200664212 /* BlooToothDevice.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,10 +445,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = BlooTooth/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.v8logic.BlooTooth;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -407,10 +459,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = BlooTooth/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.v8logic.BlooTooth;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
@@ -481,6 +536,7 @@
 				DCC516371B74E4D40097F3B9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		DCC516381B74E4D40097F3B9 /* Build configuration list for PBXNativeTarget "BlooToothTests" */ = {
 			isa = XCConfigurationList;
@@ -489,6 +545,7 @@
 				DCC5163A1B74E4D40097F3B9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		DCC5163B1B74E4D40097F3B9 /* Build configuration list for PBXNativeTarget "BlooToothUITests" */ = {
 			isa = XCConfigurationList;
@@ -497,6 +554,7 @@
 				DCC5163D1B74E4D40097F3B9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
