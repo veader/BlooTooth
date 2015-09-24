@@ -7,9 +7,9 @@
 //
 
 import UIKit
+import CoreBluetooth
 
-class DevicesTableViewController: UITableViewController, BlooToothManagerDelegate {
-    let blootooth = BlooToothManager()
+class DevicesTableViewController: UITableViewController {
     let devicesDataSource = DevicesDataSource()
     
     @IBOutlet weak var scanButton : UIBarButtonItem?
@@ -21,7 +21,6 @@ class DevicesTableViewController: UITableViewController, BlooToothManagerDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.blootooth.delegate = self
         self.tableView.dataSource = self.devicesDataSource
         
         self.stopButton?.enabled = false
@@ -37,7 +36,12 @@ class DevicesTableViewController: UITableViewController, BlooToothManagerDelegat
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.blootooth.delegate = self // so we can take the delegate back
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "peripheralsUpdated:", name: BlooToothNotifications.PeripheralsUpdated.rawValue, object: nil)
+    }
+
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(BlooToothManager.sharedInstance)
     }
 
     override func didReceiveMemoryWarning() {
@@ -47,11 +51,11 @@ class DevicesTableViewController: UITableViewController, BlooToothManagerDelegat
 
     // MARK: UI Interaction Methods
     @IBAction func startBlooToothScan(sender: UIButton?) {
-        self.blootooth.startScan()
+        BlooToothManager.sharedInstance.startScan()
         self.scanButton?.enabled = false
         self.stopButton?.enabled = true
         
-        NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: "stopScan", userInfo: nil, repeats: false)
+        NSTimer.scheduledTimerWithTimeInterval(20, target: self, selector: "stopScan", userInfo: nil, repeats: false)
     }
     
     @IBAction func stopBlooToothScan(sender: UIButton) {
@@ -59,39 +63,27 @@ class DevicesTableViewController: UITableViewController, BlooToothManagerDelegat
     }
     
     func stopScan() {
-        self.blootooth.stopScan()
+        BlooToothManager.sharedInstance.stopScan()
         self.stopButton?.enabled = false
         self.scanButton?.enabled = true
     }
 
-    // MARK: BlooToothManager Delegate Methods
-    func managerDidUpdateDevices(devices : [BlooToothDevice]) {
-        self.devicesDataSource.updateDevices(devices)
+    // MARK: - Notification Response Methods
+    @objc func peripheralsUpdated(notification: NSNotification) {
+        let peripherals = notification.object as! [CBPeripheral]
+        self.devicesDataSource.updateDevices(peripherals)
         self.tableView.reloadData()
-        // NOTE: If we wanted to do smart updates, we should probably hand the DS the data and 
+        // NOTE: If we wanted to do smart updates, we should probably hand the DS the data and
         //       have it return a list of changed index paths...
         // TODO: reset button back to refresh icon.
     }
 
-    func managerDidConnectToDevice(device: BlooToothDevice) { }
-    func managerDidDiscoverServiceForDevice(device: BlooToothDevice) { }
-    func managerDidDisconnectFromDevice(device: BlooToothDevice) { }
-
-
-    // MARK: UITableView Delegate Methods
-    /*
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
+    // MARK: - UITableView Delegate Methods
     override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
         self.selectedIndex = indexPath
         return indexPath
     }
+
     override func tableView(tableView: UITableView, willDeselectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
         self.selectedIndex = nil
         return indexPath
@@ -102,9 +94,8 @@ class DevicesTableViewController: UITableViewController, BlooToothManagerDelegat
         if segue.identifier == "btDeviceSegue" {
             if self.selectedIndex != nil {
                 let dest = segue.destinationViewController as! DeviceDetailsViewController
-                let device = self.devicesDataSource.deviceAtIndex((self.selectedIndex?.row)!)
-                dest.device = device
-                dest.deviceManager = self.blootooth
+                let peripheral = self.devicesDataSource.deviceAtIndex((self.selectedIndex?.row)!)
+                dest.peripheral = peripheral
             }
             stopScan() // just in case
         } else {

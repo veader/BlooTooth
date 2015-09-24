@@ -7,33 +7,39 @@
 //
 
 import UIKit
-import Foundation
+import CoreBluetooth
 
 class DevicesDataSource : NSObject, UITableViewDataSource {
-    var blootoothDevices = [BlooToothDevice]()
+    var blootoothDevices = [CBPeripheral]()
 
-    func updateDevices(devices: [BlooToothDevice]) {
-        self.blootoothDevices = devices
+    override init() {
+        super.init()
+        // go ahead and grab what the manager may have
+        updateDevices(BlooToothManager.sharedInstance.peripherals)
     }
 
-    // MARK: UITableViewDataSource Methods
+    func updateDevices(peripherals: [CBPeripheral]) {
+        self.blootoothDevices = peripherals
+    }
+
+    // MARK: - UITableViewDataSource Methods
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.blootoothDevices.count
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let device = self.blootoothDevices[indexPath.row]
+        let peripheral = self.blootoothDevices[indexPath.row]
         let cell = tableView.dequeueReusableCellWithIdentifier("btDevice") ?? UITableViewCell()
-        var titleString = device.name ?? "Unknown" // device.description
-        if device.rssi != nil {
-            titleString.appendContentsOf(" (\(device.rssi!) db)")
-        }
+        let titleString = peripheral.name ?? "Unknown" // device.description
+//        if peripheral.rssi != nil {
+//            titleString.appendContentsOf(" (\(device.rssi!) db)")
+//        }
         cell.textLabel?.text = titleString
-        cell.detailTextLabel?.text = device.identifier.UUIDString
+        cell.detailTextLabel?.text = peripheral.identifier.UUIDString
         return cell
     }
     
-    func deviceAtIndex(index: Int) -> BlooToothDevice {
+    func deviceAtIndex(index: Int) -> CBPeripheral {
         return self.blootoothDevices[index]
     }
 }

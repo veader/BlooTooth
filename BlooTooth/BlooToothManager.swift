@@ -9,53 +9,36 @@
 import Foundation
 import CoreBluetooth
 
-// MARK: BlooToothManagerDelegate Protocol Definition
-protocol BlooToothManagerDelegate {
-    func managerDidUpdateDevices(devices : [BlooToothDevice])
-    func managerDidConnectToDevice(device: BlooToothDevice)
-    func managerDidDiscoverServiceForDevice(device: BlooToothDevice)
-    func managerDidDisconnectFromDevice(device: BlooToothDevice)
+// MARK: - BlooToothNotifications Enum
+enum BlooToothNotifications: String {
+    case PeripheralsUpdated = "PeripheralsUpdated"
+    case PeripheralConnected = "PeripheralConnected"
+    case PeripheralDisconnected = "PeripheralDisconnected"
+    case PeripheralDataChanged = "PeripheralDataChanged"
+    case PeripheralServicesUpdated = "PeripheralServicesUpdated"
+}
+
+// MARK: - CBPeripheral Extension
+extension CBPeripheral {
 }
 
 
 class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
+
+    static let sharedInstance = BlooToothManager()
+
     let centralManager : CBCentralManager
-    var delegate : BlooToothManagerDelegate?
-    var devices : [BlooToothDevice]
+    var peripherals : [CBPeripheral]
 
-    var connectPeripheral : CBPeripheral?
-
-    
-    // MARK: Initialization
+    // MARK: - Initialization
     override init() {
         self.centralManager = CBCentralManager()
-        self.devices = [BlooToothDevice]()
+        self.peripherals = [CBPeripheral]()
         super.init()
-        setupCentralManagerDelegate()
-    }
-
-    init(delegate : BlooToothManagerDelegate?) {
-        self.delegate = delegate
-        self.centralManager = CBCentralManager()
-        self.devices = [BlooToothDevice]()
-        super.init()
-        setupCentralManagerDelegate()
-    }
-    
-    init(delegate : BlooToothManagerDelegate?, centralManager : CBCentralManager?) {
-        self.delegate = delegate
-        self.centralManager = centralManager ?? CBCentralManager()
-        self.devices = [BlooToothDevice]()
-        super.init()
-        setupCentralManagerDelegate()
-    }
-
-    func setupCentralManagerDelegate() {
         self.centralManager.delegate = self
     }
-    
-    
-    // MARK: Methods
+
+    // MARK: - Scan Methods
     func startScan() {
         print("BT: starting scan...")
         self.centralManager.scanForPeripheralsWithServices(nil, options: nil)
@@ -66,54 +49,28 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
         self.centralManager.stopScan()
     }
 
-    func deviceFromPeripheral(peripheral: CBPeripheral, rssi: NSNumber) -> BlooToothDevice {
-        if var d = findDeviceForPeripheral(peripheral) {
-            d.touch() // update based on peripheral
-            return d
-        } else {
-            return BlooToothDevice(name: peripheral.name, identifier: peripheral.identifier, peripheral: peripheral, rssi: rssi)
-        }
-    }
-
-    func findDeviceForPeripheral(peripheral: CBPeripheral) -> BlooToothDevice? {
-        if let i = self.devices.indexOf({
-            (device: BlooToothDevice) -> Bool in
-            return device.peripheral == peripheral
-        }) {
-            return self.devices[i]
-        }
-        return nil
-    }
-
-    func connectToDevice(device: BlooToothDevice) {
+    // MARK: - Connection Methods
+    func connectToPeripheral(peripheral: CBPeripheral) {
         // TODO: what do the options do?
-        if let p = device.peripheral {
-            print("BT: Connecting to device \(device)")
-            self.centralManager.connectPeripheral(p, options: nil)
-        }
+        print("BT: Connecting to peripheral \(peripheral)")
+        self.centralManager.connectPeripheral(peripheral, options: nil)
     }
 
-    func disconnectFromDevice(device: BlooToothDevice) {
-        if let p = device.peripheral {
-            print("BT: Disconnecting from device \(device)")
-            self.centralManager.cancelPeripheralConnection(p)
-        }
+    func disconnectFromPeripheral(peripheral: CBPeripheral) {
+        print("BT: Disconnecting from peripheral \(peripheral)")
+        self.centralManager.cancelPeripheralConnection(peripheral)
     }
 
-    func discoverServicesForDevice(device: BlooToothDevice) {
-        if let p = device.peripheral {
-            p.delegate = self
-            p.discoverServices(nil)
-        }
+    func discoverServicesForPeripheral(peripheral: CBPeripheral) {
+        peripheral.delegate = self
+        peripheral.discoverServices(nil)
     }
 
-    // MARK: CBCentralManagerDelegate Methods
+    // MARK: - CBCentralManagerDelegate Methods
     func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral) {
         print("didConnectPeripheral:")
         print(peripheral)
-        var d = deviceFromPeripheral(peripheral, rssi: 0)
-        d.touch()
-        self.delegate?.managerDidConnectToDevice(d)
+        NSNotificationCenter.defaultCenter().postNotificationName(BlooToothNotifications.PeripheralConnected.rawValue, object: peripheral)
     }
     
     func centralManager(central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: NSError?) {
@@ -121,25 +78,18 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
         print(peripheral)
         print(error)
         print(error?.description)
-        var d = deviceFromPeripheral(peripheral, rssi: 0)
-        d.touch()
-        self.delegate?.managerDidDisconnectFromDevice(d)
+        NSNotificationCenter.defaultCenter().postNotificationName(BlooToothNotifications.PeripheralDisconnected.rawValue, object: peripheral)
     }
     
     func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber) {
         print("didDiscoverPeripheral:")
 
-        let device = deviceFromPeripheral(peripheral, rssi: RSSI)
-        print("Peripheral:")
-        print(peripheral)
-        print("Advertisement:")
-        print(advertisementData)
-
-        if !self.devices.contains(device) {
-            NSLog("Adding \(device)...")
-            devices.append(device)
+        if !self.peripherals.contains(peripheral) {
+            print("Adding... \(peripheral)")
+            print(advertisementData)
+            self.peripherals.append(peripheral)
         }
-        self.delegate?.managerDidUpdateDevices(self.devices)
+        NSNotificationCenter.defaultCenter().postNotificationName(BlooToothNotifications.PeripheralsUpdated.rawValue, object: self.peripherals)
     }
     
     func centralManager(central: CBCentralManager, didFailToConnectPeripheral peripheral: CBPeripheral, error: NSError?) {
@@ -158,7 +108,7 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
         print(central)
     }
 
-    // MARK: CBPeripheralDelegate Methods
+    // MARK: - CBPeripheralDelegate Methods
     func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?) {
         //
     }
@@ -172,17 +122,18 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
     }
     
     func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
-        let d = deviceFromPeripheral(peripheral, rssi: 0)
-        self.delegate?.managerDidDiscoverServiceForDevice(d)
+        print("peripheral:didDiscoverServices:")
+        NSNotificationCenter.defaultCenter().postNotificationName(BlooToothNotifications.PeripheralServicesUpdated.rawValue, object: peripheral)
     }
     
     func peripheral(peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
-        //
+        print("peripheral:didModifyServices:")
+        NSNotificationCenter.defaultCenter().postNotificationName(BlooToothNotifications.PeripheralServicesUpdated.rawValue, object: peripheral)
     }
     
     func peripheral(peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: NSError?) {
-        //
         print("peripheral:didReadRSSI:")
+        NSNotificationCenter.defaultCenter().postNotificationName(BlooToothNotifications.PeripheralDataChanged.rawValue, object: peripheral)
     }
     
     func peripheral(peripheral: CBPeripheral, didUpdateNotificationStateForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
@@ -206,12 +157,12 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
     }
     
     func peripheralDidUpdateName(peripheral: CBPeripheral) {
-        //
         print("peripheralDidUpdateName:")
+        NSNotificationCenter.defaultCenter().postNotificationName(BlooToothNotifications.PeripheralDataChanged.rawValue, object: self.peripherals)
     }
     
     func peripheralDidUpdateRSSI(peripheral: CBPeripheral, error: NSError?) {
-        //
         print("peripheralDidUpdateRSSI:")
+        NSNotificationCenter.defaultCenter().postNotificationName(BlooToothNotifications.PeripheralDataChanged.rawValue, object: self.peripherals)
     }
 }
