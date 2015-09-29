@@ -37,6 +37,7 @@ class DevicesTableViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "peripheralsUpdated:", name: BlooToothNotifications.PeripheralsUpdated.rawValue, object: nil)
+        self.tableView.reloadData() // in case any of the devices found more info after connecting...
     }
 
     override func viewWillDisappear(animated: Bool) {

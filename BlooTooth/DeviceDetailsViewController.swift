@@ -9,17 +9,21 @@
 import UIKit
 import CoreBluetooth
 
-class DeviceDetailsViewController: UIViewController {
+class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var nameLabel: UILabel?
     @IBOutlet weak var identifierLabel: UILabel?
     @IBOutlet weak var stateLabel: UILabel?
     @IBOutlet weak var rssiLabel: UILabel?
-    @IBOutlet weak var servicesLabel: UILabel?
+    @IBOutlet weak var statusLabel: UILabel?
+    @IBOutlet weak var tableView: UITableView?
+
+    var services: [CBService]? = [CBService]()
 
     var peripheral: CBPeripheral? {
         didSet {
             setupDeviceLabels()
+            self.services = self.peripheral?.services
         }
     }
 
@@ -38,6 +42,7 @@ class DeviceDetailsViewController: UIViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "peripheralServicesUpdated:", name: BlooToothNotifications.PeripheralServicesUpdated.rawValue, object: nil)
 
         if let p = self.peripheral {
+            self.statusLabel?.text = "Connecting..."
             BlooToothManager.sharedInstance.connectToPeripheral(p)
         } else {
             // TODO: warn here
@@ -75,6 +80,7 @@ class DeviceDetailsViewController: UIViewController {
             }
 
             // only update the services if we are connected - disconnected erases the list :(
+            /*
             if p.state == CBPeripheralState.Connected {
                 var servicesString = "No services known"
                 if let services = p.services {
@@ -83,8 +89,9 @@ class DeviceDetailsViewController: UIViewController {
 //                        servicesString.appendContentsOf("\(service)")
 //                    }
                 }
-                self.servicesLabel?.text = servicesString
+                // self.servicesLabel?.text = servicesString
             }
+            */
 
             self.rssiLabel?.text = "?? (db)"
 
@@ -97,7 +104,7 @@ class DeviceDetailsViewController: UIViewController {
             // TODO: pop up something with an alert
             self.nameLabel?.text = ""
             self.identifierLabel?.text = ""
-            self.servicesLabel?.text = ""
+            self.statusLabel?.text = "No device given?"
             self.rssiLabel?.text = ""
         }
     }
@@ -107,6 +114,7 @@ class DeviceDetailsViewController: UIViewController {
         let p = notification.object as! CBPeripheral
         if p == self.peripheral {
             setupDeviceLabels()
+            self.statusLabel?.text = "Discovering Services..."
             BlooToothManager.sharedInstance.discoverServicesForPeripheral(p)
         }
     }
@@ -115,6 +123,7 @@ class DeviceDetailsViewController: UIViewController {
         let p = notification.object as! CBPeripheral
         if p == self.peripheral {
             setupDeviceLabels()
+            self.statusLabel?.text = "Disconnected"
         }
     }
 
@@ -122,7 +131,51 @@ class DeviceDetailsViewController: UIViewController {
         let p = notification.object as! CBPeripheral
         if p == self.peripheral {
             setupDeviceLabels()
+            self.services = p.services
+            self.tableView?.reloadData()
+            self.statusLabel?.text
         }
+    }
+
+    // MARK: - UITableViewDataSource Methods
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Services"
+    }
+
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if let s = self.services {
+            return s.count
+        } else {
+            return 0
+        }
+    }
+
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("btPeripheralServiceCell") ?? UITableViewCell()
+
+        if let s = self.services {
+            if s.count < indexPath.row {
+                return cell
+            }
+            let service = s[indexPath.row]
+            print(service)
+            var nameString: String = ""
+            switch service.UUID.UUIDString {
+            case BlooToothKnownServices.ServiceBattery.rawValue:
+                nameString = "Battery"
+            case BlooToothKnownServices.ServiceDeviceInfo.rawValue:
+                nameString = "Device Information"
+            default:
+                nameString = service.UUID.UUIDString
+            }
+            cell.textLabel?.text = nameString
+            cell.detailTextLabel?.text = service.UUID.UUIDString
+        }
+        return cell
     }
 
     /*

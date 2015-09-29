@@ -9,6 +9,11 @@
 import Foundation
 import CoreBluetooth
 
+enum BlooToothKnownServices: String {
+    case ServiceDeviceInfo = "180A"
+    case ServiceBattery = "180F"
+}
+
 // MARK: - BlooToothNotifications Enum
 enum BlooToothNotifications: String {
     case PeripheralsUpdated = "PeripheralsUpdated"
