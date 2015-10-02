@@ -36,8 +36,12 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
     var peripherals : [CBPeripheral]
 
     // MARK: - Initialization
-    override init() {
-        self.centralManager = CBCentralManager()
+    convenience override init() {
+        self.init(manager: CBCentralManager())
+    }
+
+    init(manager: CBCentralManager) {
+        self.centralManager = manager
         self.peripherals = [CBPeripheral]()
         super.init()
         self.centralManager.delegate = self

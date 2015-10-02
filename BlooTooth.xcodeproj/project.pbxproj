@@ -14,6 +14,10 @@
 		DC27608A1BB212AF00664212 /* BlooToothDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2760891BB212AF00664212 /* BlooToothDevice.swift */; settings = {ASSET_TAGS = (); }; };
 		DC27608B1BB212B200664212 /* BlooToothDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2760891BB212AF00664212 /* BlooToothDevice.swift */; settings = {ASSET_TAGS = (); }; };
 		DC27608C1BB212B200664212 /* BlooToothDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2760891BB212AF00664212 /* BlooToothDevice.swift */; settings = {ASSET_TAGS = (); }; };
+		DC2760901BBAB12700664212 /* BlooToothDeviceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC27608F1BBAB12700664212 /* BlooToothDeviceTest.swift */; settings = {ASSET_TAGS = (); }; };
+		DC2760921BBB0DC000664212 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC2760911BBB0DC000664212 /* CoreBluetooth.framework */; };
+		DC2760931BBB0DE000664212 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC2760911BBB0DC000664212 /* CoreBluetooth.framework */; settings = {ASSET_TAGS = (); }; };
+		DC2760951BBC628900664212 /* BlooToothManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2760941BBC628900664212 /* BlooToothManagerTest.swift */; settings = {ASSET_TAGS = (); }; };
 		DCC516111B74E4D40097F3B9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC516101B74E4D40097F3B9 /* AppDelegate.swift */; };
 		DCC516161B74E4D40097F3B9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCC516141B74E4D40097F3B9 /* Main.storyboard */; };
 		DCC516181B74E4D40097F3B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCC516171B74E4D40097F3B9 /* Assets.xcassets */; };
@@ -55,6 +59,9 @@
 		DC2760831BB0B12600664212 /* DeviceDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceDetailsViewController.swift; sourceTree = "<group>"; };
 		DC2760851BB1A53D00664212 /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
 		DC2760891BB212AF00664212 /* BlooToothDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlooToothDevice.swift; sourceTree = "<group>"; };
+		DC27608F1BBAB12700664212 /* BlooToothDeviceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlooToothDeviceTest.swift; sourceTree = "<group>"; };
+		DC2760911BBB0DC000664212 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		DC2760941BBC628900664212 /* BlooToothManagerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlooToothManagerTest.swift; sourceTree = "<group>"; };
 		DCC5160D1B74E4D40097F3B9 /* BlooTooth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlooTooth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCC516101B74E4D40097F3B9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DCC516151B74E4D40097F3B9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -78,6 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC2760921BBB0DC000664212 /* CoreBluetooth.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,6 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC2760931BBB0DE000664212 /* CoreBluetooth.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,6 +110,7 @@
 		DCC516041B74E4D40097F3B9 = {
 			isa = PBXGroup;
 			children = (
+				DC2760911BBB0DC000664212 /* CoreBluetooth.framework */,
 				DCC5160F1B74E4D40097F3B9 /* BlooTooth */,
 				DCC516241B74E4D40097F3B9 /* BlooToothTests */,
 				DCC5162F1B74E4D40097F3B9 /* BlooToothUITests */,
@@ -140,7 +150,9 @@
 		DCC516241B74E4D40097F3B9 /* BlooToothTests */ = {
 			isa = PBXGroup;
 			children = (
+				DC2760941BBC628900664212 /* BlooToothManagerTest.swift */,
 				DCC516251B74E4D40097F3B9 /* BlooToothTests.swift */,
+				DC27608F1BBAB12700664212 /* BlooToothDeviceTest.swift */,
 				DCC516271B74E4D40097F3B9 /* Info.plist */,
 			);
 			path = BlooToothTests;
@@ -305,8 +317,10 @@
 				DCDA490F1B7A8FBB0059F3F1 /* DeviceServicesTableViewController.swift in Sources */,
 				DCC516401B74EF570097F3B9 /* DevicesTableViewController.swift in Sources */,
 				DC2760871BB1A72B00664212 /* DeviceDetailsViewController.swift in Sources */,
+				DC2760951BBC628900664212 /* BlooToothManagerTest.swift in Sources */,
 				DCC516481B74EFFD0097F3B9 /* BlooToothManager.swift in Sources */,
 				DCC516261B74E4D40097F3B9 /* BlooToothTests.swift in Sources */,
+				DC2760901BBAB12700664212 /* BlooToothDeviceTest.swift in Sources */,
 				DC27608B1BB212B200664212 /* BlooToothDevice.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
