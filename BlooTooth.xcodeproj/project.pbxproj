@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DC126BE21BC2CFE30054E506 /* ServiceDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC126BE11BC2CFE30054E506 /* ServiceDetailsViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		DC126BE31BC2CFE30054E506 /* ServiceDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC126BE11BC2CFE30054E506 /* ServiceDetailsViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		DC126BE41BC2CFE30054E506 /* ServiceDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC126BE11BC2CFE30054E506 /* ServiceDetailsViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		DC126BE61BC30EBD0054E506 /* BlooToothConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC126BE51BC30EBD0054E506 /* BlooToothConstants.swift */; settings = {ASSET_TAGS = (); }; };
+		DC126BE71BC30EBD0054E506 /* BlooToothConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC126BE51BC30EBD0054E506 /* BlooToothConstants.swift */; settings = {ASSET_TAGS = (); }; };
+		DC126BE81BC30EBD0054E506 /* BlooToothConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC126BE51BC30EBD0054E506 /* BlooToothConstants.swift */; settings = {ASSET_TAGS = (); }; };
 		DC2760841BB0B12600664212 /* DeviceDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2760831BB0B12600664212 /* DeviceDetailsViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		DC2760861BB1A53D00664212 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2760851BB1A53D00664212 /* IntroViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		DC2760871BB1A72B00664212 /* DeviceDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2760831BB0B12600664212 /* DeviceDetailsViewController.swift */; settings = {ASSET_TAGS = (); }; };
@@ -56,6 +62,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DC126BE11BC2CFE30054E506 /* ServiceDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceDetailsViewController.swift; sourceTree = "<group>"; };
+		DC126BE51BC30EBD0054E506 /* BlooToothConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlooToothConstants.swift; sourceTree = "<group>"; };
 		DC2760831BB0B12600664212 /* DeviceDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceDetailsViewController.swift; sourceTree = "<group>"; };
 		DC2760851BB1A53D00664212 /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
 		DC2760891BB212AF00664212 /* BlooToothDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlooToothDevice.swift; sourceTree = "<group>"; };
@@ -133,12 +141,14 @@
 			children = (
 				DCC516101B74E4D40097F3B9 /* AppDelegate.swift */,
 				DCC516461B74EFFD0097F3B9 /* BlooToothManager.swift */,
+				DC126BE51BC30EBD0054E506 /* BlooToothConstants.swift */,
 				DC2760891BB212AF00664212 /* BlooToothDevice.swift */,
 				DCC516421B74EFE70097F3B9 /* DevicesDataSource.swift */,
 				DC2760831BB0B12600664212 /* DeviceDetailsViewController.swift */,
 				DCC5163E1B74EF570097F3B9 /* DevicesTableViewController.swift */,
 				DCDA490D1B7A8FBB0059F3F1 /* DeviceServicesTableViewController.swift */,
 				DC2760851BB1A53D00664212 /* IntroViewController.swift */,
+				DC126BE11BC2CFE30054E506 /* ServiceDetailsViewController.swift */,
 				DCC516141B74E4D40097F3B9 /* Main.storyboard */,
 				DCC516171B74E4D40097F3B9 /* Assets.xcassets */,
 				DCC516191B74E4D40097F3B9 /* LaunchScreen.storyboard */,
@@ -298,6 +308,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC126BE61BC30EBD0054E506 /* BlooToothConstants.swift in Sources */,
 				DCC516431B74EFE70097F3B9 /* DevicesDataSource.swift in Sources */,
 				DCDA490E1B7A8FBB0059F3F1 /* DeviceServicesTableViewController.swift in Sources */,
 				DC27608A1BB212AF00664212 /* BlooToothDevice.swift in Sources */,
@@ -306,6 +317,7 @@
 				DC2760841BB0B12600664212 /* DeviceDetailsViewController.swift in Sources */,
 				DCC516471B74EFFD0097F3B9 /* BlooToothManager.swift in Sources */,
 				DCC5163F1B74EF570097F3B9 /* DevicesTableViewController.swift in Sources */,
+				DC126BE21BC2CFE30054E506 /* ServiceDetailsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -318,6 +330,8 @@
 				DCC516401B74EF570097F3B9 /* DevicesTableViewController.swift in Sources */,
 				DC2760871BB1A72B00664212 /* DeviceDetailsViewController.swift in Sources */,
 				DC2760951BBC628900664212 /* BlooToothManagerTest.swift in Sources */,
+				DC126BE31BC2CFE30054E506 /* ServiceDetailsViewController.swift in Sources */,
+				DC126BE71BC30EBD0054E506 /* BlooToothConstants.swift in Sources */,
 				DCC516481B74EFFD0097F3B9 /* BlooToothManager.swift in Sources */,
 				DCC516261B74E4D40097F3B9 /* BlooToothTests.swift in Sources */,
 				DC2760901BBAB12700664212 /* BlooToothDeviceTest.swift in Sources */,
@@ -331,11 +345,13 @@
 			files = (
 				DCC516451B74EFE70097F3B9 /* DevicesDataSource.swift in Sources */,
 				DCDA49101B7A8FBB0059F3F1 /* DeviceServicesTableViewController.swift in Sources */,
+				DC126BE81BC30EBD0054E506 /* BlooToothConstants.swift in Sources */,
 				DCC516411B74EF570097F3B9 /* DevicesTableViewController.swift in Sources */,
 				DC2760881BB1A72C00664212 /* DeviceDetailsViewController.swift in Sources */,
 				DCC516491B74EFFD0097F3B9 /* BlooToothManager.swift in Sources */,
 				DCC516311B74E4D40097F3B9 /* BlooToothUITests.swift in Sources */,
 				DC27608C1BB212B200664212 /* BlooToothDevice.swift in Sources */,
+				DC126BE41BC2CFE30054E506 /* ServiceDetailsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

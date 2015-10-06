@@ -19,6 +19,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
     @IBOutlet weak var tableView: UITableView?
 
     var services: [CBService]? = [CBService]()
+    var selectedService: CBService?
 
     var peripheral: CBPeripheral? {
         didSet {
@@ -29,8 +30,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        self.navigationController?.title = "Peripheral"
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -53,9 +53,9 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(BlooToothManager.sharedInstance)
-        if let p = self.peripheral {
-            BlooToothManager.sharedInstance.disconnectFromPeripheral(p)
-        }
+//        if let p = self.peripheral {
+//            BlooToothManager.sharedInstance.disconnectFromPeripheral(p)
+//        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -69,37 +69,21 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
             self.identifierLabel?.text = p.identifier.UUIDString
 
             switch p.state {
-            case .Disconnected:
-                self.stateLabel?.text = "Disconnected"
-            case .Disconnecting:
-                self.stateLabel?.text = "Disconnecting"
-            case .Connected:
-                self.stateLabel?.text = "Connected"
-            case .Connecting:
-                self.stateLabel?.text = "Connecting"
+                case .Disconnected:
+                    self.stateLabel?.text = "Disconnected"
+                case .Disconnecting:
+                    self.stateLabel?.text = "Disconnecting"
+                case .Connected:
+                    self.stateLabel?.text = "Connected"
+                case .Connecting:
+                    self.stateLabel?.text = "Connecting"
             }
 
-            // only update the services if we are connected - disconnected erases the list :(
-            /*
-            if p.state == CBPeripheralState.Connected {
-                var servicesString = "No services known"
-                if let services = p.services {
-                    servicesString = "\(services.count) service(s) found"
-//                    for service: CBService in services {
-//                        servicesString.appendContentsOf("\(service)")
-//                    }
-                }
-                // self.servicesLabel?.text = servicesString
+            if let rssi = BlooToothManager.sharedInstance.rssiForPeripheralWithUUID(p.identifier) {
+                self.rssiLabel?.text = "\(rssi) (db)"
+            } else {
+                self.rssiLabel?.text = "Unknown"
             }
-            */
-
-            self.rssiLabel?.text = "?? (db)"
-
-//            if d.rssi != nil {
-//                self.rssiLabel?.text = "\(d.rssi!) db"
-//            } else {
-//                self.rssiLabel?.text = "Unknown"
-//            }
         } else {
             // TODO: pop up something with an alert
             self.nameLabel?.text = ""
@@ -133,7 +117,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
             setupDeviceLabels()
             self.services = p.services
             self.tableView?.reloadData()
-            self.statusLabel?.text
+            self.statusLabel?.text = "Connected"
         }
     }
 
@@ -155,37 +139,47 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("btPeripheralServiceCell") ?? UITableViewCell()
+        let cell = tableView.dequeueReusableCellWithIdentifier("btServiceCell") ?? UITableViewCell()
 
-        if let s = self.services {
-            if s.count < indexPath.row {
-                return cell
-            }
-            let service = s[indexPath.row]
-            print(service)
-            var nameString: String = ""
-            switch service.UUID.UUIDString {
-            case BlooToothKnownServices.ServiceBattery.rawValue:
-                nameString = "Battery"
-            case BlooToothKnownServices.ServiceDeviceInfo.rawValue:
-                nameString = "Device Information"
-            default:
-                nameString = service.UUID.UUIDString
-            }
-            cell.textLabel?.text = nameString
+        if let service = serviceForIndex(indexPath.row) {
+            cell.textLabel?.text = BlooToothManager.sharedInstance.serviceNameFromUUID(service.UUID.UUIDString)
             cell.detailTextLabel?.text = service.UUID.UUIDString
         }
         return cell
     }
 
-    /*
-    // MARK: - Navigation
+//    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+//        if let service = serviceForIndex(indexPath.row) {
+//            print("Selected \(service)")
+//            self.selectedService = service
+//        }
+//    }
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func serviceForIndex(index: Int) -> CBService? {
+        if let s = self.services {
+            if s.count >= index {
+                return s[index]
+            }
+        }
+        return nil
     }
-    */
+
+    // MARK: - Navigation
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let identifier = segue.identifier {
+            if identifier == "btServiceSegue" {
+                let cell = sender as! UITableViewCell
+                if let indexPath = self.tableView?.indexPathForCell(cell) {
+                    if let service = serviceForIndex(indexPath.row) {
+                        print("Selected \(service)")
+                        self.selectedService = service
+                    }
+
+                    let destController = segue.destinationViewController as! ServiceDetailsViewController
+                    destController.service = self.selectedService
+                }
+            }
+        }
+    }
 
 }

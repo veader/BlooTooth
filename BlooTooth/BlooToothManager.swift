@@ -9,11 +9,6 @@
 import Foundation
 import CoreBluetooth
 
-enum BlooToothKnownServices: String {
-    case ServiceDeviceInfo = "180A"
-    case ServiceBattery = "180F"
-}
-
 // MARK: - BlooToothNotifications Enum
 enum BlooToothNotifications: String {
     case PeripheralsUpdated = "PeripheralsUpdated"
@@ -21,10 +16,8 @@ enum BlooToothNotifications: String {
     case PeripheralDisconnected = "PeripheralDisconnected"
     case PeripheralDataChanged = "PeripheralDataChanged"
     case PeripheralServicesUpdated = "PeripheralServicesUpdated"
-}
-
-// MARK: - CBPeripheral Extension
-extension CBPeripheral {
+    case ServiceCharacteristicsUpdated = "PeripheralCharacteristicsUpdated"
+    case CharacteristicDescriptorsUpdated = "CharacteristicDescriptorsUpdated"
 }
 
 
@@ -34,6 +27,7 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
 
     let centralManager : CBCentralManager
     var peripherals : [CBPeripheral]
+    var peripheralRSSIMap : [String : NSNumber]
 
     // MARK: - Initialization
     convenience override init() {
@@ -43,8 +37,20 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
     init(manager: CBCentralManager) {
         self.centralManager = manager
         self.peripherals = [CBPeripheral]()
+        self.peripheralRSSIMap = [String: NSNumber]()
         super.init()
         self.centralManager.delegate = self
+    }
+
+    // MARK: - Helper Methods
+    func serviceNameFromUUID(uuid: String) -> String {
+        var nameString: String = uuid
+        if let serviceEnum = BlueToothKnownServices(rawValue: uuid) {
+            if let serviceName = BlueToothKnownServicesLookup[serviceEnum] {
+                nameString = serviceName
+            }
+        }
+        return nameString
     }
 
     // MARK: - Scan Methods
@@ -75,6 +81,23 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
         peripheral.discoverServices(nil)
     }
 
+    func discoverCharacteristicsForService(peripheral: CBPeripheral, service: CBService) {
+        peripheral.delegate = self
+        peripheral.discoverCharacteristics(nil, forService: service)
+    }
+
+    func discoverCharacteristicDescriptorsForService(peripheral: CBPeripheral, characteristics: [CBCharacteristic]) {
+        peripheral.delegate = self
+        _ = characteristics.map { (char: CBCharacteristic) -> CBCharacteristic in
+            peripheral.discoverDescriptorsForCharacteristic(char)
+            return char
+        }
+    }
+
+    func rssiForPeripheralWithUUID(uuid : NSUUID) -> NSNumber? {
+        return self.peripheralRSSIMap[uuid.UUIDString]
+    }
+
     // MARK: - CBCentralManagerDelegate Methods
     func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral) {
         print("didConnectPeripheral:")
@@ -97,6 +120,7 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
             print("Adding... \(peripheral)")
             print(advertisementData)
             self.peripherals.append(peripheral)
+            self.peripheralRSSIMap[peripheral.identifier.UUIDString] = RSSI
         }
         NSNotificationCenter.defaultCenter().postNotificationName(BlooToothNotifications.PeripheralsUpdated.rawValue, object: self.peripherals)
     }
@@ -119,11 +143,21 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
 
     // MARK: - CBPeripheralDelegate Methods
     func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?) {
-        //
+        print("------------------------------------")
+        print("peripheral:didDiscoverCharacteristicsForService:")
+        print(service)
+        print("------------------------------------")
+        // let returnObject = PeripheralAndService(peripheral: peripheral, service: service)
+        NSNotificationCenter.defaultCenter().postNotificationName(BlooToothNotifications.ServiceCharacteristicsUpdated.rawValue, object: service)
     }
     
     func peripheral(peripheral: CBPeripheral, didDiscoverDescriptorsForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
-        //
+        print("------------------------------------")
+        print("peripheral:didDiscoverDescriptorsForCharacteristic:")
+        print(characteristic)
+        print("------------------------------------")
+        // let returnObject = PeripheralAndService(peripheral: peripheral, service: service)
+        NSNotificationCenter.defaultCenter().postNotificationName(BlooToothNotifications.CharacteristicDescriptorsUpdated.rawValue, object: characteristic)
     }
     
     func peripheral(peripheral: CBPeripheral, didDiscoverIncludedServicesForService service: CBService, error: NSError?) {
@@ -142,6 +176,7 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
     
     func peripheral(peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: NSError?) {
         print("peripheral:didReadRSSI:")
+        self.peripheralRSSIMap[peripheral.identifier.UUIDString] = RSSI
         NSNotificationCenter.defaultCenter().postNotificationName(BlooToothNotifications.PeripheralDataChanged.rawValue, object: peripheral)
     }
     
