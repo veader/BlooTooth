@@ -52,7 +52,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(BlooToothManager.sharedInstance)
+        NSNotificationCenter.defaultCenter().removeObserver(self)
 //        if let p = self.peripheral {
 //            BlooToothManager.sharedInstance.disconnectFromPeripheral(p)
 //        }
