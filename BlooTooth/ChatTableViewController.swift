@@ -18,6 +18,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
 
     @IBOutlet weak var statusLabel: UILabel?
     @IBOutlet weak var clientsConnectedLabel: UILabel?
+    @IBOutlet weak var clientsConnectedHeadingLabel: UILabel?
     @IBOutlet weak var tableView: UITableView?
     @IBOutlet weak var responseTextField: UITextField?
     @IBOutlet weak var sendButton: UIButton?
@@ -26,6 +27,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
 
     typealias ChatResponse = (senderName: String, contents: String)
     var conversation: [ChatResponse] = [ChatResponse]()
+    var isPeripheral: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,6 +73,32 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         })
     }
 
+    // MARK: - ...
+    func actAsPeripheral() {
+        self.isPeripheral = true
+        setupBasedOnRole()
+    }
+
+    func actAsCentral() {
+        self.isPeripheral = false
+        setupBasedOnRole()
+    }
+
+    func setupBasedOnRole() {
+        if self.isPeripheral == true {
+            self.navigationController?.title = "Server"
+            self.statusLabel?.text = "Waiting for Connections..."
+            self.clientsConnectedLabel?.text = "0 clients connected"
+            self.clientsConnectedLabel?.hidden = false
+            self.clientsConnectedHeadingLabel?.hidden = false
+        } else {
+            self.navigationController?.title = "Client"
+            self.statusLabel?.text = "Connecting to Server..."
+            self.clientsConnectedLabel?.hidden = true
+            self.clientsConnectedHeadingLabel?.hidden = true
+        }
+    }
+
     // MARK: - Button Methods
     @IBAction func closeButtonTapped(sender: UIBarButtonItem) {
         self.dismissViewControllerAnimated(true, completion: nil)
@@ -97,6 +125,9 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                 return false
             }
             addToConversation("Server", message: response)
+            if self.responseTextField?.isFirstResponder() == true {
+                self.responseTextField?.resignFirstResponder()
+            }
             self.responseTextField?.text = ""
             return true
         }

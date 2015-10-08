@@ -25,9 +25,16 @@ class IntroViewController: UIViewController {
 
     // MARK: - Navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        if let ident = segue.identifier {
-//            if ident == "btStartScanSegue" {
-//            }
-//        }
+        if let ident = segue.identifier {
+            switch ident {
+                case "btServerSegue":
+                    print("Server")
+                    let destinationNav = segue.destinationViewController as! UINavigationController
+                    let finalDestination = destinationNav.topViewController as! ChatTableViewController
+                    finalDestination.actAsPeripheral()
+                default:
+                    print("Other")
+            }
+        }
     }
 }

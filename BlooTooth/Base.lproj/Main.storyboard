@@ -503,6 +503,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="clientsConnectedHeadingLabel" destination="YNg-oZ-uB0" id="uIH-H1-tgA"/>
                         <outlet property="clientsConnectedLabel" destination="kfK-eE-aep" id="AHA-I8-FRm"/>
                         <outlet property="responseTextField" destination="Nn3-sn-Tj0" id="u06-yG-vnu"/>
                         <outlet property="sendButton" destination="g8P-To-wXM" id="WGS-Nh-R0j"/>
@@ -516,10 +517,10 @@
             </objects>
             <point key="canvasLocation" x="1223" y="298"/>
         </scene>
-        <!--View Controller-->
+        <!--Intro View Controller-->
         <scene sceneID="G6y-ez-swL">
             <objects>
-                <viewController id="NOH-U6-acZ" sceneMemberID="viewController">
+                <viewController id="NOH-U6-acZ" customClass="IntroViewController" customModule="BlooTooth" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="BOD-lP-sO4"/>
                         <viewControllerLayoutGuide type="bottom" id="8Cx-0v-Xlk"/>
@@ -567,7 +568,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <segue destination="qLh-Ig-tkZ" kind="presentation" id="tof-61-c0l"/>
+                                                    <segue destination="qLh-Ig-tkZ" kind="presentation" identifier="btServerSegue" id="tof-61-c0l"/>
                                                 </connections>
                                             </button>
                                         </subviews>
