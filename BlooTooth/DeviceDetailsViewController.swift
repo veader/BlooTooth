@@ -11,22 +11,17 @@ import CoreBluetooth
 
 class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-    @IBOutlet weak var nameLabel: UILabel?
-    @IBOutlet weak var identifierLabel: UILabel?
-    @IBOutlet weak var stateLabel: UILabel?
-    @IBOutlet weak var rssiLabel: UILabel?
-    @IBOutlet weak var statusLabel: UILabel?
-    @IBOutlet weak var tableView: UITableView?
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var identifierLabel: UILabel!
+    @IBOutlet weak var stateLabel: UILabel!
+    @IBOutlet weak var rssiLabel: UILabel!
+    @IBOutlet weak var statusLabel: UILabel!
+    @IBOutlet weak var tableView: UITableView!
 
     var services: [CBService]? = [CBService]()
     var selectedService: CBService?
 
-    var peripheral: CBPeripheral? {
-        didSet {
-            setupDeviceLabels()
-            self.services = self.peripheral?.services
-        }
-    }
+    var peripheral: CBPeripheral?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,24 +33,23 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
         setupDeviceLabels()
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "peripheralConnected:", name: BlooToothNotifications.PeripheralConnected.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "peripheralDataChanged:", name: BlooToothNotifications.PeripheralDataChanged.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "peripheralDisconnected:", name: BlooToothNotifications.PeripheralDisconnected.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "peripheralServicesUpdated:", name: BlooToothNotifications.PeripheralServicesUpdated.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "peripheralFinishedInvestigation:", name: BlooToothNotifications.PeripheralServicesUpdated.rawValue, object: nil)
 
-        if let p = self.peripheral {
-            self.statusLabel?.text = "Connecting..."
+        guard let p = self.peripheral else { print("No peripheral passed to device details VC"); return }
+        if p.state != CBPeripheralState.Connected {
+            self.statusLabel.text = "Connecting..."
             BlooToothManager.sharedInstance.connectToPeripheral(p)
         } else {
-            // TODO: warn here
-            print("No peripheral passed to device details VC")
+            self.statusLabel.text = "Connected"
+            self.services = p.services
         }
     }
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self)
-//        if let p = self.peripheral {
-//            BlooToothManager.sharedInstance.disconnectFromPeripheral(p)
-//        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -64,61 +58,58 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
     }
 
     func setupDeviceLabels() {
-        if let p = self.peripheral {
-            self.nameLabel?.text = p.name ?? "Unknown"
-            self.identifierLabel?.text = p.identifier.UUIDString
+        guard let p = self.peripheral else { blankDeviceLabels(); return }
 
-            switch p.state {
-                case .Disconnected:
-                    self.stateLabel?.text = "Disconnected"
-                case .Disconnecting:
-                    self.stateLabel?.text = "Disconnecting"
-                case .Connected:
-                    self.stateLabel?.text = "Connected"
-                case .Connecting:
-                    self.stateLabel?.text = "Connecting"
-            }
+        self.nameLabel.text = p.name ?? "Unknown"
+        self.identifierLabel.text = p.identifier.UUIDString
 
-            if let rssi = BlooToothManager.sharedInstance.rssiForPeripheralWithUUID(p.identifier) {
-                self.rssiLabel?.text = "\(rssi) (db)"
-            } else {
-                self.rssiLabel?.text = "Unknown"
-            }
-        } else {
-            // TODO: pop up something with an alert
-            self.nameLabel?.text = ""
-            self.identifierLabel?.text = ""
-            self.statusLabel?.text = "No device given?"
-            self.rssiLabel?.text = ""
+        switch p.state {
+            case .Disconnected:
+                self.stateLabel.text = "Disconnected"
+            case .Disconnecting:
+                self.stateLabel.text = "Disconnecting"
+            case .Connected:
+                self.stateLabel.text = "Connected"
+            case .Connecting:
+                self.stateLabel.text = "Connecting"
         }
+
+        if let rssi = BlooToothManager.sharedInstance.rssiForPeripheralWithUUID(p.identifier) {
+            self.rssiLabel.text = "\(rssi) (db)"
+        } else {
+            self.rssiLabel.text = "Unknown"
+        }
+    }
+
+    func blankDeviceLabels() {
+        self.nameLabel.text = ""
+        self.identifierLabel.text = ""
+        self.statusLabel.text = "No device given?"
+        self.rssiLabel.text = ""
     }
 
     // MARK: - Notification Response Methods
     @objc func peripheralConnected(notification: NSNotification) {
         let p = notification.object as! CBPeripheral
-        if p == self.peripheral {
-            setupDeviceLabels()
-            self.statusLabel?.text = "Discovering Services..."
-            BlooToothManager.sharedInstance.discoverServicesForPeripheral(p)
-        }
+        guard p == self.peripheral else { return }
+        setupDeviceLabels()
+        self.statusLabel.text = "Investigating Device..."
     }
 
     @objc func peripheralDisconnected(notification: NSNotification) {
-        let p = notification.object as! CBPeripheral
-        if p == self.peripheral {
-            setupDeviceLabels()
-            self.statusLabel?.text = "Disconnected"
-        }
+        setupDeviceLabels()
     }
 
-    @objc func peripheralServicesUpdated(notification: NSNotification) {
+    @objc func peripheralFinishedInvestigation(notification: NSNotification) {
         let p = notification.object as! CBPeripheral
-        if p == self.peripheral {
-            setupDeviceLabels()
-            self.services = p.services
-            self.tableView?.reloadData()
-            self.statusLabel?.text = "Connected"
-        }
+        guard p == self.peripheral else { return }
+        self.services = p.services
+        self.tableView.reloadData()
+        self.statusLabel.text = "Connected"
+    }
+
+    @objc func peripheralDataChanged(notification: NSNotification) {
+        setupDeviceLabels()
     }
 
     // MARK: - UITableViewDataSource Methods
@@ -148,13 +139,6 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
         return cell
     }
 
-//    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        if let service = serviceForIndex(indexPath.row) {
-//            print("Selected \(service)")
-//            self.selectedService = service
-//        }
-//    }
-
     func serviceForIndex(index: Int) -> CBService? {
         if let s = self.services {
             if s.count >= index {
@@ -166,18 +150,18 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
 
     // MARK: - Navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let identifier = segue.identifier {
-            if identifier == "btServiceSegue" {
-                let cell = sender as! UITableViewCell
-                if let indexPath = self.tableView?.indexPathForCell(cell) {
-                    if let service = serviceForIndex(indexPath.row) {
-                        print("Selected \(service)")
-                        self.selectedService = service
-                    }
+        guard let identifier = segue.identifier else { print("No segue identifier!?!"); return }
 
-                    let destController = segue.destinationViewController as! ServiceDetailsViewController
-                    destController.service = self.selectedService
+        if identifier == "btServiceSegue" {
+            let cell = sender as! UITableViewCell
+            if let indexPath = self.tableView.indexPathForCell(cell) {
+                if let service = serviceForIndex(indexPath.row) {
+                    print("Selected \(service)")
+                    self.selectedService = service
                 }
+
+                let destController = segue.destinationViewController as! ServiceDetailsViewController
+                destController.service = self.selectedService
             }
         }
     }

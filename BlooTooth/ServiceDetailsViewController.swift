@@ -11,10 +11,10 @@ import CoreBluetooth
 
 class ServiceDetailsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-    @IBOutlet weak var nameLabel: UILabel?
-    @IBOutlet weak var identifierLabel: UILabel?
-    @IBOutlet weak var statusLabel: UILabel?
-    @IBOutlet weak var tableView: UITableView?
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var identifierLabel: UILabel!
+    @IBOutlet weak var statusLabel: UILabel!
+    @IBOutlet weak var tableView: UITableView!
 
     var service: CBService?
     var characteristics: [CBCharacteristic]? = [CBCharacteristic]()
@@ -30,18 +30,19 @@ class ServiceDetailsViewController: UIViewController, UITableViewDataSource, UIT
 
         setupServiceLabels()
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "serviceCharacteristicsUpdated:", name: BlooToothNotifications.ServiceCharacteristicsUpdated.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "characteristicDescriptorsUpdated:", name: BlooToothNotifications.CharacteristicDescriptorsUpdated.rawValue, object: nil)
+        self.selectedCharacteristic = nil
+        if let index = self.tableView.indexPathForSelectedRow {
+            self.tableView.deselectRowAtIndexPath(index, animated: false)
+        }
 
         if let s = self.service {
-            self.statusLabel?.text = "Discovering Characteristics..."
-            BlooToothManager.sharedInstance.discoverCharacteristicsForService(s.peripheral, service: s)
+            self.characteristics = s.characteristics
         }
     }
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        // NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
 
@@ -51,27 +52,27 @@ class ServiceDetailsViewController: UIViewController, UITableViewDataSource, UIT
     }
 
     func setupServiceLabels() {
-        if let s = self.service {
-            self.nameLabel?.text = BlooToothManager.sharedInstance.serviceNameFromUUID(s.UUID.UUIDString)
-            self.identifierLabel?.text = s.UUID.UUIDString
-        }
+        guard let s = self.service else { return }
+
+        self.nameLabel.text = BlooToothManager.sharedInstance.serviceNameFromUUID(s.UUID.UUIDString)
+        self.identifierLabel.text = s.UUID.UUIDString
     }
 
     @objc func serviceCharacteristicsUpdated(notification: NSNotification) {
         let s = notification.object as! CBService
-        if s == self.service {
-            self.characteristics = self.service?.characteristics
-            self.tableView?.reloadData()
-            self.statusLabel?.text = "Discovering Descriptors..."
-            BlooToothManager.sharedInstance.discoverCharacteristicDescriptorsForService(s.peripheral, characteristics: self.service!.characteristics!)
-        }
+        guard s == self.service else { return }
+
+        self.characteristics = s.characteristics
+        self.tableView.reloadData()
+        self.statusLabel.text = "Discovering Descriptors..."
+        BlooToothManager.sharedInstance.discoverDescriptorsForCharacteristics(s.peripheral, characteristics: s.characteristics!)
     }
 
     @objc func characteristicDescriptorsUpdated(notification: NSNotification) {
         let c = notification.object as! CBCharacteristic
-        if c == self.selectedCharacteristic {
-            self.statusLabel?.text = ""
-        }
+        guard c == self.selectedCharacteristic else { return }
+
+        self.statusLabel.text = ""
     }
 
     // MARK: - UITableViewDataSource Methods
@@ -84,18 +85,16 @@ class ServiceDetailsViewController: UIViewController, UITableViewDataSource, UIT
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let c = self.characteristics {
-            return c.count
-        } else {
-            return 0
-        }
+        guard let c = self.characteristics else { return 0 }
+        return c.count
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("btCharacteristicCell") ?? UITableViewCell()
 
         if let characteristic = characteristicForIndex(indexPath.row) {
-            var nameString: String = characteristic.description
+            let nameString: String = characteristic.description
+            // TODO: get characteristic names in here
 //            switch service.UUID.UUIDString {
 //            case BlooToothKnownServices.ServiceBattery.rawValue:
 //                nameString = "Battery"
@@ -111,10 +110,14 @@ class ServiceDetailsViewController: UIViewController, UITableViewDataSource, UIT
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if let characteristic = characteristicForIndex(indexPath.row) {
-            print("Selected \(characteristic)")
-            self.selectedCharacteristic = characteristic
-            BlooToothManager.sharedInstance.discoverCharacteristicsForService(self.service!.peripheral, service: self.service!)
+        guard let characteristic = characteristicForIndex(indexPath.row) else { return }
+
+        self.selectedCharacteristic = characteristic
+        print("Descriptors:")
+        if let descriptors = characteristic.descriptors {
+            descriptors.forEach { print($0) }
+        } else {
+            print(" - none - ")
         }
     }
 

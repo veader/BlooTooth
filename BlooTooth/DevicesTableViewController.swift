@@ -12,23 +12,20 @@ import CoreBluetooth
 class DevicesTableViewController: UITableViewController {
     let devicesDataSource = DevicesDataSource()
     
-    @IBOutlet weak var scanButton : UIBarButtonItem?
-    @IBOutlet weak var stopButton : UIBarButtonItem?
+    @IBOutlet weak var scanButton : UIBarButtonItem!
+    @IBOutlet weak var stopButton : UIBarButtonItem!
     
-    var selectedIndex: NSIndexPath?
-
     // MARK: Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.tableView.dataSource = self.devicesDataSource
-        
-        self.stopButton?.enabled = false
+
+        self.stopButton.enabled = false
 
         startBlooToothScan(nil)
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
+        self.clearsSelectionOnViewWillAppear = true
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
@@ -79,26 +76,16 @@ class DevicesTableViewController: UITableViewController {
         // TODO: reset button back to refresh icon.
     }
 
-    // MARK: - UITableView Delegate Methods
-    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        self.selectedIndex = indexPath
-        return indexPath
-    }
-
-    override func tableView(tableView: UITableView, willDeselectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        self.selectedIndex = nil
-        return indexPath
-    }
-
     // MARK: - Navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "btDeviceSegue" {
-            if self.selectedIndex != nil {
+            let cell = sender as! UITableViewCell
+            if let indexPath = self.tableView.indexPathForCell(cell) {
                 let dest = segue.destinationViewController as! DeviceDetailsViewController
-                let peripheral = self.devicesDataSource.deviceAtIndex((self.selectedIndex?.row)!)
+                let peripheral = self.devicesDataSource.deviceAtIndex(indexPath.row)
                 dest.peripheral = peripheral
+                stopScan() // just in case
             }
-            stopScan() // just in case
         } else {
             print("Unknown segue: \(segue.identifier)")
         }

@@ -18,6 +18,7 @@ enum BlooToothNotifications: String {
     case PeripheralServicesUpdated = "PeripheralServicesUpdated"
     case ServiceCharacteristicsUpdated = "PeripheralCharacteristicsUpdated"
     case CharacteristicDescriptorsUpdated = "CharacteristicDescriptorsUpdated"
+    case PeripheralInvestigationFinished = "PeripheralInvestigationFinished"
 }
 
 
@@ -28,6 +29,7 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
     let centralManager : CBCentralManager
     var peripherals : [CBPeripheral]
     var peripheralRSSIMap : [String : NSNumber]
+    var peripheralsUnderInvestigation : [String : Int]
 
     // MARK: - Initialization
     convenience override init() {
@@ -38,6 +40,7 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
         self.centralManager = manager
         self.peripherals = [CBPeripheral]()
         self.peripheralRSSIMap = [String: NSNumber]()
+        self.peripheralsUnderInvestigation = [String: Int]()
         super.init()
         self.centralManager.delegate = self
     }
@@ -51,6 +54,28 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
             }
         }
         return nameString
+    }
+
+    func notifyWithObject(notificationName: BlooToothNotifications, object: AnyObject) {
+        NSNotificationCenter.defaultCenter().postNotificationName(notificationName.rawValue, object: object)
+    }
+
+    func incrementInvestigationCallsForPeripheral(peripheral: CBPeripheral) {
+        let uuid = peripheral.identifier.UUIDString
+        let callCount = self.peripheralsUnderInvestigation[uuid] ?? 0
+        self.peripheralsUnderInvestigation[uuid] = callCount + 1
+        print("After INC: \(self.peripheralsUnderInvestigation[uuid])")
+    }
+
+    func decrementInvestigationCallsForPeripheral(peripheral: CBPeripheral) {
+        let uuid = peripheral.identifier.UUIDString
+        let callCount = self.peripheralsUnderInvestigation[uuid] ?? 1
+        self.peripheralsUnderInvestigation[uuid] = callCount - 1
+
+        if callCount == 0 {
+            notifyWithObject(.PeripheralInvestigationFinished, object: peripheral)
+        }
+        print("After DEC: \(self.peripheralsUnderInvestigation[uuid])")
     }
 
     // MARK: - Scan Methods
@@ -76,21 +101,52 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
         self.centralManager.cancelPeripheralConnection(peripheral)
     }
 
-    func discoverServicesForPeripheral(peripheral: CBPeripheral) {
+    func investigatePeripheral(peripheral: CBPeripheral) {
+        print("BT: Investigating Peripheral: \(peripheral)")
+        // 1. start at the top and get services
+        //    a. for each service
+        //        i.  look for included services (go back to a)
+        //        ii. look for characteristics
+        //            1. look for descriptors
+
         peripheral.delegate = self
+        incrementInvestigationCallsForPeripheral(peripheral)
+        discoverServicesForPeripheral(peripheral)
+    }
+
+    func discoverServicesForPeripheral(peripheral: CBPeripheral) {
+        print("BT: Discovering services for peripheral")
+        peripheral.delegate = self
+        incrementInvestigationCallsForPeripheral(peripheral)
         peripheral.discoverServices(nil)
     }
 
-    func discoverCharacteristicsForService(peripheral: CBPeripheral, service: CBService) {
+    func discoverIncludedServicesForService(peripheral: CBPeripheral, service: CBService) {
+        print("BT: Discovering included services for service")
         peripheral.delegate = self
-        peripheral.discoverCharacteristics(nil, forService: service)
+        if let services = service.includedServices {
+            for service in services {
+                incrementInvestigationCallsForPeripheral(peripheral)
+                peripheral.discoverIncludedServices(nil, forService: service)
+            }
+        }
     }
 
-    func discoverCharacteristicDescriptorsForService(peripheral: CBPeripheral, characteristics: [CBCharacteristic]) {
+    func discoverCharacteristicsForServices(peripheral: CBPeripheral, services: [CBService]) {
+        print("BT: Discovering characteristics of services")
         peripheral.delegate = self
-        _ = characteristics.map { (char: CBCharacteristic) -> CBCharacteristic in
+        for service in services {
+            incrementInvestigationCallsForPeripheral(peripheral)
+            peripheral.discoverCharacteristics(nil, forService: service)
+        }
+    }
+
+    func discoverDescriptorsForCharacteristics(peripheral: CBPeripheral, characteristics: [CBCharacteristic]) {
+        print("BT: Discovering desriptors for characteristics")
+        peripheral.delegate = self
+        for char in characteristics {
+            incrementInvestigationCallsForPeripheral(peripheral)
             peripheral.discoverDescriptorsForCharacteristic(char)
-            return char
         }
     }
 
@@ -102,7 +158,9 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
     func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral) {
         print("didConnectPeripheral:")
         print(peripheral)
-        NSNotificationCenter.defaultCenter().postNotificationName(BlooToothNotifications.PeripheralConnected.rawValue, object: peripheral)
+        notifyWithObject(.PeripheralConnected, object: peripheral)
+        investigatePeripheral(peripheral)
+        decrementInvestigationCallsForPeripheral(peripheral)
     }
     
     func centralManager(central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: NSError?) {
@@ -110,7 +168,8 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
         print(peripheral)
         print(error)
         print(error?.description)
-        NSNotificationCenter.defaultCenter().postNotificationName(BlooToothNotifications.PeripheralDisconnected.rawValue, object: peripheral)
+        // TODO: clean up any investigation artifacts
+        notifyWithObject(.PeripheralDisconnected, object: peripheral)
     }
     
     func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber) {
@@ -122,13 +181,14 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
             self.peripherals.append(peripheral)
             self.peripheralRSSIMap[peripheral.identifier.UUIDString] = RSSI
         }
-        NSNotificationCenter.defaultCenter().postNotificationName(BlooToothNotifications.PeripheralsUpdated.rawValue, object: self.peripherals)
+        notifyWithObject(.PeripheralsUpdated, object: self.peripherals)
     }
     
     func centralManager(central: CBCentralManager, didFailToConnectPeripheral peripheral: CBPeripheral, error: NSError?) {
         print("didFailToConnectPeripheral:")
         print(peripheral)
         print(error)
+        // TODO: clean up any investigation artifacts
     }
     
     func centralManager(central: CBCentralManager, willRestoreState dict: [String : AnyObject]) {
@@ -143,70 +203,81 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
 
     // MARK: - CBPeripheralDelegate Methods
     func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?) {
-        print("------------------------------------")
         print("peripheral:didDiscoverCharacteristicsForService:")
-        print(service)
-        print("------------------------------------")
-        // let returnObject = PeripheralAndService(peripheral: peripheral, service: service)
-        NSNotificationCenter.defaultCenter().postNotificationName(BlooToothNotifications.ServiceCharacteristicsUpdated.rawValue, object: service)
+        notifyWithObject(.ServiceCharacteristicsUpdated, object: service)
+
+        if let characteristics = service.characteristics {
+            discoverDescriptorsForCharacteristics(peripheral, characteristics: characteristics)
+        }
+        decrementInvestigationCallsForPeripheral(peripheral)
     }
     
     func peripheral(peripheral: CBPeripheral, didDiscoverDescriptorsForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
-        print("------------------------------------")
         print("peripheral:didDiscoverDescriptorsForCharacteristic:")
-        print(characteristic)
-        print("------------------------------------")
-        // let returnObject = PeripheralAndService(peripheral: peripheral, service: service)
-        NSNotificationCenter.defaultCenter().postNotificationName(BlooToothNotifications.CharacteristicDescriptorsUpdated.rawValue, object: characteristic)
+        notifyWithObject(.CharacteristicDescriptorsUpdated, object: characteristic)
+        decrementInvestigationCallsForPeripheral(peripheral)
     }
     
     func peripheral(peripheral: CBPeripheral, didDiscoverIncludedServicesForService service: CBService, error: NSError?) {
-        //
+        print("peripheral:didDiscoverIncludedServicesForService:")
+        if let services = service.includedServices {
+            // TODO: do we look for included services of this included service? (how far does it go?)
+            discoverCharacteristicsForServices(peripheral, services: services)
+        }
+        decrementInvestigationCallsForPeripheral(peripheral)
     }
     
     func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
         print("peripheral:didDiscoverServices:")
-        NSNotificationCenter.defaultCenter().postNotificationName(BlooToothNotifications.PeripheralServicesUpdated.rawValue, object: peripheral)
+        notifyWithObject(.PeripheralServicesUpdated, object: peripheral)
+        if let services = peripheral.services {
+            discoverCharacteristicsForServices(peripheral, services: services)
+            for service in services {
+                discoverIncludedServicesForService(peripheral, service: service)
+            }
+        }
+        decrementInvestigationCallsForPeripheral(peripheral)
     }
     
     func peripheral(peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
         print("peripheral:didModifyServices:")
-        NSNotificationCenter.defaultCenter().postNotificationName(BlooToothNotifications.PeripheralServicesUpdated.rawValue, object: peripheral)
+        notifyWithObject(.PeripheralServicesUpdated, object: peripheral)
     }
     
     func peripheral(peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: NSError?) {
         print("peripheral:didReadRSSI:")
         self.peripheralRSSIMap[peripheral.identifier.UUIDString] = RSSI
-        NSNotificationCenter.defaultCenter().postNotificationName(BlooToothNotifications.PeripheralDataChanged.rawValue, object: peripheral)
+        notifyWithObject(.PeripheralDataChanged, object: peripheral)
     }
     
     func peripheral(peripheral: CBPeripheral, didUpdateNotificationStateForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
-        //
+        print("peripheral:didUpdateNotificationStateForCharacteristic:")
     }
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
-        //
+        print("peripheral:didUpdateValueForCharacteristic:")
     }
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForDescriptor descriptor: CBDescriptor, error: NSError?) {
-        //
+        print("peripheral:didUpdateValueForDescriptor:")
     }
     
     func peripheral(peripheral: CBPeripheral, didWriteValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
-        //
+        print("peripheral:didWriteValueForCharacteristic:")
     }
     
     func peripheral(peripheral: CBPeripheral, didWriteValueForDescriptor descriptor: CBDescriptor, error: NSError?) {
-        //
+        print("peripheral:didWriteValueForDescriptor:")
     }
     
     func peripheralDidUpdateName(peripheral: CBPeripheral) {
         print("peripheralDidUpdateName:")
-        NSNotificationCenter.defaultCenter().postNotificationName(BlooToothNotifications.PeripheralDataChanged.rawValue, object: self.peripherals)
+        print(peripheral)
+        notifyWithObject(.PeripheralDataChanged, object: self.peripherals)
     }
     
     func peripheralDidUpdateRSSI(peripheral: CBPeripheral, error: NSError?) {
         print("peripheralDidUpdateRSSI:")
-        NSNotificationCenter.defaultCenter().postNotificationName(BlooToothNotifications.PeripheralDataChanged.rawValue, object: self.peripherals)
+        notifyWithObject(.PeripheralDataChanged, object: self.peripherals)
     }
 }

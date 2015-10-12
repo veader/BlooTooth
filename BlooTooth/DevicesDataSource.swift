@@ -31,9 +31,6 @@ class DevicesDataSource : NSObject, UITableViewDataSource {
         let peripheral = self.blootoothDevices[indexPath.row]
         let cell = tableView.dequeueReusableCellWithIdentifier("btDevice") ?? UITableViewCell()
         let titleString = peripheral.name ?? "Unknown" // device.description
-//        if peripheral.rssi != nil {
-//            titleString.appendContentsOf(" (\(device.rssi!) db)")
-//        }
         cell.textLabel?.text = titleString
         cell.detailTextLabel?.text = peripheral.identifier.UUIDString
         return cell

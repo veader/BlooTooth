@@ -45,9 +45,6 @@
 		DCC516471B74EFFD0097F3B9 /* BlooToothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC516461B74EFFD0097F3B9 /* BlooToothManager.swift */; };
 		DCC516481B74EFFD0097F3B9 /* BlooToothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC516461B74EFFD0097F3B9 /* BlooToothManager.swift */; };
 		DCC516491B74EFFD0097F3B9 /* BlooToothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC516461B74EFFD0097F3B9 /* BlooToothManager.swift */; };
-		DCDA490E1B7A8FBB0059F3F1 /* DeviceServicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA490D1B7A8FBB0059F3F1 /* DeviceServicesTableViewController.swift */; };
-		DCDA490F1B7A8FBB0059F3F1 /* DeviceServicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA490D1B7A8FBB0059F3F1 /* DeviceServicesTableViewController.swift */; };
-		DCDA49101B7A8FBB0059F3F1 /* DeviceServicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA490D1B7A8FBB0059F3F1 /* DeviceServicesTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,7 +90,6 @@
 		DCC5163E1B74EF570097F3B9 /* DevicesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevicesTableViewController.swift; sourceTree = "<group>"; };
 		DCC516421B74EFE70097F3B9 /* DevicesDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevicesDataSource.swift; sourceTree = "<group>"; };
 		DCC516461B74EFFD0097F3B9 /* BlooToothManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlooToothManager.swift; sourceTree = "<group>"; };
-		DCDA490D1B7A8FBB0059F3F1 /* DeviceServicesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceServicesTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,7 +152,6 @@
 				DCC516421B74EFE70097F3B9 /* DevicesDataSource.swift */,
 				DC2760831BB0B12600664212 /* DeviceDetailsViewController.swift */,
 				DCC5163E1B74EF570097F3B9 /* DevicesTableViewController.swift */,
-				DCDA490D1B7A8FBB0059F3F1 /* DeviceServicesTableViewController.swift */,
 				DC2760851BB1A53D00664212 /* IntroViewController.swift */,
 				DC126BE11BC2CFE30054E506 /* ServiceDetailsViewController.swift */,
 				DCC516141B74E4D40097F3B9 /* Main.storyboard */,
@@ -320,7 +315,6 @@
 			files = (
 				DC126BE61BC30EBD0054E506 /* BlooToothConstants.swift in Sources */,
 				DCC516431B74EFE70097F3B9 /* DevicesDataSource.swift in Sources */,
-				DCDA490E1B7A8FBB0059F3F1 /* DeviceServicesTableViewController.swift in Sources */,
 				DC126BEA1BC46BF60054E506 /* ChatTableViewController.swift in Sources */,
 				DC27608A1BB212AF00664212 /* BlooToothDevice.swift in Sources */,
 				DC2760861BB1A53D00664212 /* IntroViewController.swift in Sources */,
@@ -339,7 +333,6 @@
 			files = (
 				DC126BEB1BC46BF60054E506 /* ChatTableViewController.swift in Sources */,
 				DCC516441B74EFE70097F3B9 /* DevicesDataSource.swift in Sources */,
-				DCDA490F1B7A8FBB0059F3F1 /* DeviceServicesTableViewController.swift in Sources */,
 				DCC516401B74EF570097F3B9 /* DevicesTableViewController.swift in Sources */,
 				DC2760871BB1A72B00664212 /* DeviceDetailsViewController.swift in Sources */,
 				DC2760951BBC628900664212 /* BlooToothManagerTest.swift in Sources */,
@@ -358,7 +351,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DCC516451B74EFE70097F3B9 /* DevicesDataSource.swift in Sources */,
-				DCDA49101B7A8FBB0059F3F1 /* DeviceServicesTableViewController.swift in Sources */,
 				DC126BE81BC30EBD0054E506 /* BlooToothConstants.swift in Sources */,
 				DC31F9F21BC69D0B00C227CE /* BlooToothPeripheralManager.swift in Sources */,
 				DCC516411B74EF570097F3B9 /* DevicesTableViewController.swift in Sources */,
