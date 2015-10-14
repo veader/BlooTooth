@@ -58,7 +58,6 @@ class BlooToothGenericCell: UITableViewCell {
     }
 
     override func awakeFromNib() {
-        print("GenericCell: awakeFromNib")
         super.awakeFromNib()
     }
 
@@ -110,19 +109,15 @@ class BlooToothGenericCell: UITableViewCell {
 
     func setType(type: BTGenericCellType) {
         switch type {
-            case .serviceCell:
-                self.genericTypeLabel.text = "S"
-                self.genericTypeLabel.textColor = UIColor.whiteColor()
-                self.genericTypeView.backgroundColor = UIColor.blackColor()
-            case .characteristicCell:
-                self.genericTypeLabel.text = "C"
-                self.genericTypeLabel.textColor = UIColor.whiteColor()
-                self.genericTypeView.backgroundColor = UIColor.darkGrayColor()
-            case .descriptorCell:
-                self.genericTypeLabel.text = "D"
-                self.genericTypeLabel.textColor = UIColor.whiteColor()
-                self.genericTypeView.backgroundColor = UIColor.lightGrayColor()
+        case .serviceCell:
+            self.genericTypeView.backgroundColor = UIColor.blackColor()
+        case .characteristicCell:
+            self.genericTypeView.backgroundColor = UIColor.darkGrayColor()
+        case .descriptorCell:
+            self.genericTypeView.backgroundColor = UIColor.lightGrayColor()
         }
+        self.genericTypeLabel.textColor = UIColor.whiteColor()
+        self.genericTypeLabel.text = type.rawValue
     }
 
     func updateExpandedIndicator() {

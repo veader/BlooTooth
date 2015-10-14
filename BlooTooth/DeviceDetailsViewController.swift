@@ -70,14 +70,14 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
         self.identifierLabel.text = p.identifier.UUIDString
 
         switch p.state {
-            case .Disconnected:
-                self.stateLabel.text = "Disconnected"
-            case .Disconnecting:
-                self.stateLabel.text = "Disconnecting"
-            case .Connected:
-                self.stateLabel.text = "Connected"
-            case .Connecting:
-                self.stateLabel.text = "Connecting"
+        case .Disconnected:
+            self.stateLabel.text = "Disconnected"
+        case .Disconnecting:
+            self.stateLabel.text = "Disconnecting"
+        case .Connected:
+            self.stateLabel.text = "Connected"
+        case .Connecting:
+            self.stateLabel.text = "Connecting"
         }
 
         if let rssi = BlooToothManager.sharedInstance.rssiForPeripheralWithUUID(p.identifier) {
@@ -96,6 +96,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
 
     func loadServices() {
         self.cellObjects.removeAll()
+
         guard let p = self.peripheral else {
             self.tableView.reloadData();
             return
@@ -146,55 +147,31 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         guard let cellItem = cellObjectForIndexPath(indexPath) else { return }
-        print("Selected: \(cellItem)")
+        // print("Selected: \(cellItem)")
 
         if cellItem.expanded {
             // remove any sub-items
             switch cellItem.cellType {
             case .serviceCell:
                 let service = (cellItem.cellObject as! CBService)
-                if let characteristics = service.characteristics {
-                    for char in characteristics {
-                        if let index = indexOfCellObjectForObject(char, theType: .characteristicCell) {
-                            self.cellObjects.removeAtIndex(index)
-                        }
-                    }
-                }
+                removeChildRowsForService(service)
             case .characteristicCell:
                 let characteristic = (cellItem.cellObject as! CBCharacteristic)
-                if let descriptors = characteristic.descriptors {
-                    for desc in descriptors {
-                        if let index = indexOfCellObjectForObject(desc, theType: .descriptorCell) {
-                            self.cellObjects.removeAtIndex(index)
-                        }
-                    }
-                }
+                removeChildRowsForCharacteristic(characteristic)
             case .descriptorCell:
-                print("Nothing to do for descriptors")
+                break
             }
         } else {
             // expand next layer
             switch cellItem.cellType {
-                case .serviceCell:
-                    let service = (cellItem.cellObject as! CBService)
-                    if let characteristics = service.characteristics {
-                        var insertIndex = indexPath.row
-                        for char in characteristics {
-                            insertIndex = insertIndex + 1
-                            self.cellObjects.insert(GenericCellType(cellObject: char, cellType: .characteristicCell, expanded: false), atIndex: insertIndex)
-                        }
-                    }
-                case .characteristicCell:
-                    let characteristic = (cellItem.cellObject as! CBCharacteristic)
-                    if let descriptors = characteristic.descriptors {
-                        var insertIndex = indexPath.row
-                        for desc in descriptors {
-                            insertIndex = insertIndex + 1
-                            self.cellObjects.insert(GenericCellType(cellObject: desc, cellType: .descriptorCell, expanded: false), atIndex: insertIndex)
-                        }
-                    }
-                case .descriptorCell:
-                    print("Nothing to do for descriptors")
+            case .serviceCell:
+                let service = (cellItem.cellObject as! CBService)
+                addChildRowsForService(service, atIndexPath: indexPath)
+            case .characteristicCell:
+                let characteristic = (cellItem.cellObject as! CBCharacteristic)
+                addChildRowsForCharacteristic(characteristic, atIndexPath: indexPath)
+            case .descriptorCell:
+                break
             }
         }
 
@@ -223,15 +200,15 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
         if let c = cell {
             if let cellItem = cellObjectForIndexPath(indexPath) {
                 switch cellItem.cellType {
-                    case .serviceCell:
-                        c.service = (cellItem.cellObject as! CBService)
-                        c.setIndentLevel(1)
-                    case .characteristicCell:
-                        c.characteristic = (cellItem.cellObject as! CBCharacteristic)
-                        c.setIndentLevel(2)
-                    case .descriptorCell:
-                        c.descriptor = (cellItem.cellObject as! CBDescriptor)
-                        c.setIndentLevel(3)
+                case .serviceCell:
+                    c.service = (cellItem.cellObject as! CBService)
+                    c.setIndentLevel(1)
+                case .characteristicCell:
+                    c.characteristic = (cellItem.cellObject as! CBCharacteristic)
+                    c.setIndentLevel(2)
+                case .descriptorCell:
+                    c.descriptor = (cellItem.cellObject as! CBDescriptor)
+                    c.setIndentLevel(3)
                 }
                 c.cellExpanded = cellItem.expanded
             }
@@ -239,6 +216,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
         return cell!
     }
 
+    // MARK: - Table Logic Helper Methods
     func cellObjectForIndexPath(indexPath: NSIndexPath) -> GenericCellType? {
         guard self.cellObjects.count >= indexPath.row else { return nil }
         return self.cellObjects[indexPath.row]
@@ -261,24 +239,45 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
         } )
     }
 
-    // MARK: - Navigation
-    /*
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        guard let identifier = segue.identifier else { print("No segue identifier!?!"); return }
-
-        if identifier == "btServiceSegue" {
-            let cell = sender as! UITableViewCell
-            if let indexPath = self.tableView.indexPathForCell(cell) {
-                if let service = serviceForIndex(indexPath.row) {
-                    print("Selected \(service)")
-                    self.selectedService = service
-                }
-
-                let destController = segue.destinationViewController as! ServiceDetailsViewController
-                destController.service = self.selectedService
+    func addChildRowsForService(service: CBService, atIndexPath indexPath: NSIndexPath) {
+        if let characteristics = service.characteristics {
+            var insertIndex = indexPath.row
+            for char in characteristics {
+                insertIndex = insertIndex + 1
+                self.cellObjects.insert(GenericCellType(cellObject: char, cellType: .characteristicCell, expanded: false), atIndex: insertIndex)
             }
         }
     }
-    */
+
+    func addChildRowsForCharacteristic(characteristic: CBCharacteristic, atIndexPath indexPath: NSIndexPath) {
+        if let descriptors = characteristic.descriptors {
+            var insertIndex = indexPath.row
+            for desc in descriptors {
+                insertIndex = insertIndex + 1
+                self.cellObjects.insert(GenericCellType(cellObject: desc, cellType: .descriptorCell, expanded: false), atIndex: insertIndex)
+            }
+        }
+    }
+
+    func removeChildRowsForService(service: CBService) {
+        if let characteristics = service.characteristics {
+            for char in characteristics {
+                if let index = indexOfCellObjectForObject(char, theType: .characteristicCell) {
+                    self.cellObjects.removeAtIndex(index)
+                }
+                removeChildRowsForCharacteristic(char)
+            }
+        }
+    }
+
+    func removeChildRowsForCharacteristic(characteristic: CBCharacteristic) {
+        if let descriptors = characteristic.descriptors {
+            for desc in descriptors {
+                if let index = indexOfCellObjectForObject(desc, theType: .descriptorCell) {
+                    self.cellObjects.removeAtIndex(index)
+                }
+            }
+        }
+    }
 
 }
