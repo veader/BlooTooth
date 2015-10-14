@@ -21,6 +21,21 @@ enum BlooToothNotifications: String {
     case PeripheralInvestigationFinished = "PeripheralInvestigationFinished"
 }
 
+// extend CBService, CBCharacteristic and CBDescriptor
+extension CBAttribute {
+    func friendlyName() -> String? {
+        var outputString: String = ""
+        print(self, separator: "", terminator: "", toStream: &outputString)
+        let pieces = outputString.componentsSeparatedByString(", ")
+        let uuidPieces = pieces.filter({ $0.hasPrefix("UUID") })
+        if uuidPieces.count > 0 {
+            let thisUUID = uuidPieces[0]
+            let pieces = thisUUID.componentsSeparatedByString(" = ")
+            return pieces[1].stringByReplacingOccurrencesOfString(">", withString: "")
+        }
+        return ""
+    }
+}
 
 class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
 
@@ -64,7 +79,7 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
         let uuid = peripheral.identifier.UUIDString
         let callCount = self.peripheralsUnderInvestigation[uuid] ?? 0
         self.peripheralsUnderInvestigation[uuid] = callCount + 1
-        print("After INC: \(self.peripheralsUnderInvestigation[uuid])")
+        // print("After INC: \(self.peripheralsUnderInvestigation[uuid])")
     }
 
     func decrementInvestigationCallsForPeripheral(peripheral: CBPeripheral) {
@@ -75,7 +90,7 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
         if callCount == 0 {
             notifyWithObject(.PeripheralInvestigationFinished, object: peripheral)
         }
-        print("After DEC: \(self.peripheralsUnderInvestigation[uuid])")
+        // print("After DEC: \(self.peripheralsUnderInvestigation[uuid])")
     }
 
     // MARK: - Scan Methods

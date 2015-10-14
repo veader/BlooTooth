@@ -11,6 +11,12 @@ import CoreBluetooth
 
 class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
+    struct GenericCellType {
+        var cellObject: AnyObject
+        var cellType: BTGenericCellType
+        var expanded: Bool = false
+    }
+
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var identifierLabel: UILabel!
     @IBOutlet weak var stateLabel: UILabel!
@@ -18,10 +24,10 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
 
-    var services: [CBService]? = [CBService]()
-    var selectedService: CBService?
+    let cellReuseIdentifier = "btGenericCell"
 
     var peripheral: CBPeripheral?
+    var cellObjects: [GenericCellType] = [GenericCellType]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +49,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
             BlooToothManager.sharedInstance.connectToPeripheral(p)
         } else {
             self.statusLabel.text = "Connected"
-            self.services = p.services
+            loadServices()
         }
     }
 
@@ -88,10 +94,27 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
         self.rssiLabel.text = ""
     }
 
+    func loadServices() {
+        self.cellObjects.removeAll()
+        guard let p = self.peripheral else {
+            self.tableView.reloadData();
+            return
+        }
+
+        if let services = p.services {
+            for service in services {
+                self.cellObjects.append(GenericCellType(cellObject: service, cellType: BTGenericCellType.serviceCell, expanded: false))
+            }
+        }
+        self.tableView.reloadData()
+    }
+
     // MARK: - Notification Response Methods
     @objc func peripheralConnected(notification: NSNotification) {
         let p = notification.object as! CBPeripheral
         guard p == self.peripheral else { return }
+
+        loadServices()
         setupDeviceLabels()
         self.statusLabel.text = "Investigating Device..."
     }
@@ -103,8 +126,8 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
     @objc func peripheralFinishedInvestigation(notification: NSNotification) {
         let p = notification.object as! CBPeripheral
         guard p == self.peripheral else { return }
-        self.services = p.services
-        self.tableView.reloadData()
+
+        loadServices()
         self.statusLabel.text = "Connected"
     }
 
@@ -117,38 +140,129 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
         return 1
     }
 
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Services"
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.cellObjects.count
     }
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let s = self.services {
-            return s.count
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        guard let cellItem = cellObjectForIndexPath(indexPath) else { return }
+        print("Selected: \(cellItem)")
+
+        if cellItem.expanded {
+            // remove any sub-items
+            switch cellItem.cellType {
+            case .serviceCell:
+                let service = (cellItem.cellObject as! CBService)
+                if let characteristics = service.characteristics {
+                    for char in characteristics {
+                        if let index = indexOfCellObjectForObject(char, theType: .characteristicCell) {
+                            self.cellObjects.removeAtIndex(index)
+                        }
+                    }
+                }
+            case .characteristicCell:
+                let characteristic = (cellItem.cellObject as! CBCharacteristic)
+                if let descriptors = characteristic.descriptors {
+                    for desc in descriptors {
+                        if let index = indexOfCellObjectForObject(desc, theType: .descriptorCell) {
+                            self.cellObjects.removeAtIndex(index)
+                        }
+                    }
+                }
+            case .descriptorCell:
+                print("Nothing to do for descriptors")
+            }
         } else {
-            return 0
+            // expand next layer
+            switch cellItem.cellType {
+                case .serviceCell:
+                    let service = (cellItem.cellObject as! CBService)
+                    if let characteristics = service.characteristics {
+                        var insertIndex = indexPath.row
+                        for char in characteristics {
+                            insertIndex = insertIndex + 1
+                            self.cellObjects.insert(GenericCellType(cellObject: char, cellType: .characteristicCell, expanded: false), atIndex: insertIndex)
+                        }
+                    }
+                case .characteristicCell:
+                    let characteristic = (cellItem.cellObject as! CBCharacteristic)
+                    if let descriptors = characteristic.descriptors {
+                        var insertIndex = indexPath.row
+                        for desc in descriptors {
+                            insertIndex = insertIndex + 1
+                            self.cellObjects.insert(GenericCellType(cellObject: desc, cellType: .descriptorCell, expanded: false), atIndex: insertIndex)
+                        }
+                    }
+                case .descriptorCell:
+                    print("Nothing to do for descriptors")
+            }
         }
+
+        // should be safe since we have the guard above
+        self.cellObjects[indexPath.row].expanded = !cellItem.expanded
+
+        // TODO: replace with real diff
+        self.tableView.reloadData()
+    }
+
+    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+        guard let cellItem = cellObjectForIndexPath(indexPath) else { return }
+        print("Deselected: \(cellItem)")
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("btServiceCell") ?? UITableViewCell()
+        let dequeuedCell = tableView.dequeueReusableCellWithIdentifier(cellReuseIdentifier)
+        var cell: BlooToothGenericCell?
 
-        if let service = serviceForIndex(indexPath.row) {
-            cell.textLabel?.text = BlooToothManager.sharedInstance.serviceNameFromUUID(service.UUID.UUIDString)
-            cell.detailTextLabel?.text = service.UUID.UUIDString
+        if dequeuedCell != nil {
+            cell = (dequeuedCell as! BlooToothGenericCell)
+        } else {
+            print("WARNING: No cell was dequeued")
         }
-        return cell
-    }
 
-    func serviceForIndex(index: Int) -> CBService? {
-        if let s = self.services {
-            if s.count >= index {
-                return s[index]
+        if let c = cell {
+            if let cellItem = cellObjectForIndexPath(indexPath) {
+                switch cellItem.cellType {
+                    case .serviceCell:
+                        c.service = (cellItem.cellObject as! CBService)
+                        c.setIndentLevel(1)
+                    case .characteristicCell:
+                        c.characteristic = (cellItem.cellObject as! CBCharacteristic)
+                        c.setIndentLevel(2)
+                    case .descriptorCell:
+                        c.descriptor = (cellItem.cellObject as! CBDescriptor)
+                        c.setIndentLevel(3)
+                }
+                c.cellExpanded = cellItem.expanded
             }
         }
-        return nil
+        return cell!
+    }
+
+    func cellObjectForIndexPath(indexPath: NSIndexPath) -> GenericCellType? {
+        guard self.cellObjects.count >= indexPath.row else { return nil }
+        return self.cellObjects[indexPath.row]
+    }
+
+    func indexOfCellObjectForObject(obj: AnyObject, theType: BTGenericCellType) -> Int? {
+        return self.cellObjects.indexOf( {
+            if $0.cellType == theType {
+                switch theType {
+                case .serviceCell:
+                    return (obj as! CBService) == ($0.cellObject as! CBService)
+                case .characteristicCell:
+                    return (obj as! CBCharacteristic) == ($0.cellObject as! CBCharacteristic)
+                case .descriptorCell:
+                    return (obj as! CBDescriptor) == ($0.cellObject as! CBDescriptor)
+                }
+            } else {
+                return false
+            }
+        } )
     }
 
     // MARK: - Navigation
+    /*
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         guard let identifier = segue.identifier else { print("No segue identifier!?!"); return }
 
@@ -165,5 +279,6 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
             }
         }
     }
+    */
 
 }
