@@ -17,6 +17,9 @@ enum BTGenericCellType: String {
 
 class BlooToothGenericCell: UITableViewCell {
 
+    let checkMark = "☑"
+    let xCheckMark = "☒"
+
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var uuidLabel: UILabel!
     @IBOutlet weak var expandedIndicationLabel: UILabel!
@@ -88,7 +91,9 @@ class BlooToothGenericCell: UITableViewCell {
         guard let char = self.characteristic else { return }
         // self.nameLabel.text = char.description
         self.nameLabel.text = char.friendlyName()
-        self.uuidLabel.text = char.UUID.UUIDString
+        var finalString = "Notifying: \(char.isNotifying == true ? checkMark : xCheckMark)  |  UUID: "
+        finalString.appendContentsOf(char.UUID.UUIDString)
+        self.uuidLabel.text = finalString
         setType(.characteristicCell)
     }
 

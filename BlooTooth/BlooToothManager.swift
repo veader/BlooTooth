@@ -156,12 +156,32 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
         }
     }
 
+    func readValuesForCharacteristic(peripheral: CBPeripheral, characteristics: [CBCharacteristic]) {
+        print("BT: Reading values of characteristics")
+        peripheral.delegate = self
+        for char in characteristics {
+            if char.properties.contains(.Read) {
+                incrementInvestigationCallsForPeripheral(peripheral)
+                peripheral.readValueForCharacteristic(char)
+            }
+        }
+    }
+
     func discoverDescriptorsForCharacteristics(peripheral: CBPeripheral, characteristics: [CBCharacteristic]) {
         print("BT: Discovering desriptors for characteristics")
         peripheral.delegate = self
         for char in characteristics {
             incrementInvestigationCallsForPeripheral(peripheral)
             peripheral.discoverDescriptorsForCharacteristic(char)
+        }
+    }
+
+    func readValuesForDescriptors(peripheral: CBPeripheral, descriptors: [CBDescriptor]) {
+        print("BT: Reading values of descriptors")
+        peripheral.delegate = self
+        for desc in descriptors {
+            incrementInvestigationCallsForPeripheral(peripheral)
+            peripheral.readValueForDescriptor(desc)
         }
     }
 
@@ -223,6 +243,7 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
 
         if let characteristics = service.characteristics {
             discoverDescriptorsForCharacteristics(peripheral, characteristics: characteristics)
+            readValuesForCharacteristic(peripheral, characteristics: characteristics)
         }
         decrementInvestigationCallsForPeripheral(peripheral)
     }
@@ -230,6 +251,10 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
     func peripheral(peripheral: CBPeripheral, didDiscoverDescriptorsForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
         print("peripheral:didDiscoverDescriptorsForCharacteristic:")
         notifyWithObject(.CharacteristicDescriptorsUpdated, object: characteristic)
+
+        if let desciptors = characteristic.descriptors {
+            readValuesForDescriptors(peripheral, descriptors: desciptors)
+        }
         decrementInvestigationCallsForPeripheral(peripheral)
     }
     
@@ -271,10 +296,16 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
         print("peripheral:didUpdateValueForCharacteristic:")
+        // TODO: notify, etc
+        print(characteristic)
+        decrementInvestigationCallsForPeripheral(peripheral)
     }
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForDescriptor descriptor: CBDescriptor, error: NSError?) {
         print("peripheral:didUpdateValueForDescriptor:")
+        // TODO: notify, etc
+        print(descriptor)
+        decrementInvestigationCallsForPeripheral(peripheral)
     }
     
     func peripheral(peripheral: CBPeripheral, didWriteValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {

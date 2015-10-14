@@ -21,7 +21,6 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
     @IBOutlet weak var identifierLabel: UILabel!
     @IBOutlet weak var stateLabel: UILabel!
     @IBOutlet weak var rssiLabel: UILabel!
-    @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
 
     let cellReuseIdentifier = "btGenericCell"
@@ -45,10 +44,10 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
 
         guard let p = self.peripheral else { print("No peripheral passed to device details VC"); return }
         if p.state != CBPeripheralState.Connected {
-            self.statusLabel.text = "Connecting..."
+            setStatusText("Connecting...")
             BlooToothManager.sharedInstance.connectToPeripheral(p)
         } else {
-            self.statusLabel.text = "Connected"
+            setStatusText("Connected")
             loadServices()
         }
     }
@@ -90,8 +89,12 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
     func blankDeviceLabels() {
         self.nameLabel.text = ""
         self.identifierLabel.text = ""
-        self.statusLabel.text = "No device given?"
+        setStatusText("No device given?")
         self.rssiLabel.text = ""
+    }
+
+    func setStatusText(status: String) {
+        self.title = status
     }
 
     func loadServices() {
@@ -117,11 +120,12 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
 
         loadServices()
         setupDeviceLabels()
-        self.statusLabel.text = "Investigating Device..."
+        setStatusText("Investigating Device...")
     }
 
     @objc func peripheralDisconnected(notification: NSNotification) {
         setupDeviceLabels()
+        setStatusText("Disconnected")
     }
 
     @objc func peripheralFinishedInvestigation(notification: NSNotification) {
@@ -129,7 +133,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
         guard p == self.peripheral else { return }
 
         loadServices()
-        self.statusLabel.text = "Connected"
+        setStatusText("Connected")
     }
 
     @objc func peripheralDataChanged(notification: NSNotification) {
@@ -147,7 +151,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         guard let cellItem = cellObjectForIndexPath(indexPath) else { return }
-        // print("Selected: \(cellItem)")
+        print("Selected: \(cellItem)")
 
         if cellItem.expanded {
             // remove any sub-items
