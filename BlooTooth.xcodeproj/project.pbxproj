@@ -1,0 +1,592 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		DC08BBE31BCC4D5500017C0D /* BlooToothGenericCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC08BBE21BCC4D5500017C0D /* BlooToothGenericCell.swift */; settings = {ASSET_TAGS = (); }; };
+		DC08BBE41BCC4D5500017C0D /* BlooToothGenericCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC08BBE21BCC4D5500017C0D /* BlooToothGenericCell.swift */; settings = {ASSET_TAGS = (); }; };
+		DC08BBE51BCC4D5500017C0D /* BlooToothGenericCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC08BBE21BCC4D5500017C0D /* BlooToothGenericCell.swift */; settings = {ASSET_TAGS = (); }; };
+		DC126BE61BC30EBD0054E506 /* BlooToothConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC126BE51BC30EBD0054E506 /* BlooToothConstants.swift */; settings = {ASSET_TAGS = (); }; };
+		DC126BE71BC30EBD0054E506 /* BlooToothConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC126BE51BC30EBD0054E506 /* BlooToothConstants.swift */; settings = {ASSET_TAGS = (); }; };
+		DC126BE81BC30EBD0054E506 /* BlooToothConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC126BE51BC30EBD0054E506 /* BlooToothConstants.swift */; settings = {ASSET_TAGS = (); }; };
+		DC126BEA1BC46BF60054E506 /* ChatTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC126BE91BC46BF60054E506 /* ChatTableViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		DC126BEB1BC46BF60054E506 /* ChatTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC126BE91BC46BF60054E506 /* ChatTableViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		DC126BEC1BC46BF60054E506 /* ChatTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC126BE91BC46BF60054E506 /* ChatTableViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		DC2760841BB0B12600664212 /* DeviceDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2760831BB0B12600664212 /* DeviceDetailsViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		DC2760861BB1A53D00664212 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2760851BB1A53D00664212 /* IntroViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		DC2760871BB1A72B00664212 /* DeviceDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2760831BB0B12600664212 /* DeviceDetailsViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		DC2760881BB1A72C00664212 /* DeviceDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2760831BB0B12600664212 /* DeviceDetailsViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		DC2760901BBAB12700664212 /* BlooToothDeviceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC27608F1BBAB12700664212 /* BlooToothDeviceTest.swift */; settings = {ASSET_TAGS = (); }; };
+		DC2760921BBB0DC000664212 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC2760911BBB0DC000664212 /* CoreBluetooth.framework */; };
+		DC2760931BBB0DE000664212 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC2760911BBB0DC000664212 /* CoreBluetooth.framework */; settings = {ASSET_TAGS = (); }; };
+		DC2760951BBC628900664212 /* BlooToothManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2760941BBC628900664212 /* BlooToothManagerTest.swift */; settings = {ASSET_TAGS = (); }; };
+		DC31F9F01BC69D0B00C227CE /* BlooToothPeripheralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC31F9EF1BC69D0B00C227CE /* BlooToothPeripheralManager.swift */; settings = {ASSET_TAGS = (); }; };
+		DC31F9F11BC69D0B00C227CE /* BlooToothPeripheralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC31F9EF1BC69D0B00C227CE /* BlooToothPeripheralManager.swift */; settings = {ASSET_TAGS = (); }; };
+		DC31F9F21BC69D0B00C227CE /* BlooToothPeripheralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC31F9EF1BC69D0B00C227CE /* BlooToothPeripheralManager.swift */; settings = {ASSET_TAGS = (); }; };
+		DCC516111B74E4D40097F3B9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC516101B74E4D40097F3B9 /* AppDelegate.swift */; };
+		DCC516161B74E4D40097F3B9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCC516141B74E4D40097F3B9 /* Main.storyboard */; };
+		DCC516181B74E4D40097F3B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCC516171B74E4D40097F3B9 /* Assets.xcassets */; };
+		DCC5161B1B74E4D40097F3B9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCC516191B74E4D40097F3B9 /* LaunchScreen.storyboard */; };
+		DCC516261B74E4D40097F3B9 /* BlooToothTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC516251B74E4D40097F3B9 /* BlooToothTests.swift */; };
+		DCC516311B74E4D40097F3B9 /* BlooToothUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC516301B74E4D40097F3B9 /* BlooToothUITests.swift */; };
+		DCC5163F1B74EF570097F3B9 /* DevicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC5163E1B74EF570097F3B9 /* DevicesTableViewController.swift */; };
+		DCC516401B74EF570097F3B9 /* DevicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC5163E1B74EF570097F3B9 /* DevicesTableViewController.swift */; };
+		DCC516411B74EF570097F3B9 /* DevicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC5163E1B74EF570097F3B9 /* DevicesTableViewController.swift */; };
+		DCC516431B74EFE70097F3B9 /* DevicesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC516421B74EFE70097F3B9 /* DevicesDataSource.swift */; };
+		DCC516441B74EFE70097F3B9 /* DevicesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC516421B74EFE70097F3B9 /* DevicesDataSource.swift */; };
+		DCC516451B74EFE70097F3B9 /* DevicesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC516421B74EFE70097F3B9 /* DevicesDataSource.swift */; };
+		DCC516471B74EFFD0097F3B9 /* BlooToothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC516461B74EFFD0097F3B9 /* BlooToothManager.swift */; };
+		DCC516481B74EFFD0097F3B9 /* BlooToothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC516461B74EFFD0097F3B9 /* BlooToothManager.swift */; };
+		DCC516491B74EFFD0097F3B9 /* BlooToothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC516461B74EFFD0097F3B9 /* BlooToothManager.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DCC516221B74E4D40097F3B9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DCC516051B74E4D40097F3B9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DCC5160C1B74E4D40097F3B9;
+			remoteInfo = BlooTooth;
+		};
+		DCC5162D1B74E4D40097F3B9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DCC516051B74E4D40097F3B9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DCC5160C1B74E4D40097F3B9;
+			remoteInfo = BlooTooth;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		DC08BBE21BCC4D5500017C0D /* BlooToothGenericCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlooToothGenericCell.swift; sourceTree = "<group>"; };
+		DC126BE51BC30EBD0054E506 /* BlooToothConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlooToothConstants.swift; sourceTree = "<group>"; };
+		DC126BE91BC46BF60054E506 /* ChatTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTableViewController.swift; sourceTree = "<group>"; };
+		DC2760831BB0B12600664212 /* DeviceDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceDetailsViewController.swift; sourceTree = "<group>"; };
+		DC2760851BB1A53D00664212 /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
+		DC27608F1BBAB12700664212 /* BlooToothDeviceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlooToothDeviceTest.swift; sourceTree = "<group>"; };
+		DC2760911BBB0DC000664212 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		DC2760941BBC628900664212 /* BlooToothManagerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlooToothManagerTest.swift; sourceTree = "<group>"; };
+		DC31F9EF1BC69D0B00C227CE /* BlooToothPeripheralManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlooToothPeripheralManager.swift; sourceTree = "<group>"; };
+		DCC5160D1B74E4D40097F3B9 /* BlooTooth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlooTooth.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCC516101B74E4D40097F3B9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		DCC516151B74E4D40097F3B9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		DCC516171B74E4D40097F3B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DCC5161A1B74E4D40097F3B9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		DCC5161C1B74E4D40097F3B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DCC516211B74E4D40097F3B9 /* BlooToothTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlooToothTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCC516251B74E4D40097F3B9 /* BlooToothTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlooToothTests.swift; sourceTree = "<group>"; };
+		DCC516271B74E4D40097F3B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DCC5162C1B74E4D40097F3B9 /* BlooToothUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlooToothUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCC516301B74E4D40097F3B9 /* BlooToothUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlooToothUITests.swift; sourceTree = "<group>"; };
+		DCC516321B74E4D40097F3B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DCC5163E1B74EF570097F3B9 /* DevicesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevicesTableViewController.swift; sourceTree = "<group>"; };
+		DCC516421B74EFE70097F3B9 /* DevicesDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevicesDataSource.swift; sourceTree = "<group>"; };
+		DCC516461B74EFFD0097F3B9 /* BlooToothManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlooToothManager.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DCC5160A1B74E4D40097F3B9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DC2760921BBB0DC000664212 /* CoreBluetooth.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DCC5161E1B74E4D40097F3B9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DC2760931BBB0DE000664212 /* CoreBluetooth.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DCC516291B74E4D40097F3B9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		DCC516041B74E4D40097F3B9 = {
+			isa = PBXGroup;
+			children = (
+				DC2760911BBB0DC000664212 /* CoreBluetooth.framework */,
+				DCC5160F1B74E4D40097F3B9 /* BlooTooth */,
+				DCC516241B74E4D40097F3B9 /* BlooToothTests */,
+				DCC5162F1B74E4D40097F3B9 /* BlooToothUITests */,
+				DCC5160E1B74E4D40097F3B9 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		DCC5160E1B74E4D40097F3B9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DCC5160D1B74E4D40097F3B9 /* BlooTooth.app */,
+				DCC516211B74E4D40097F3B9 /* BlooToothTests.xctest */,
+				DCC5162C1B74E4D40097F3B9 /* BlooToothUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DCC5160F1B74E4D40097F3B9 /* BlooTooth */ = {
+			isa = PBXGroup;
+			children = (
+				DCC516101B74E4D40097F3B9 /* AppDelegate.swift */,
+				DC126BE51BC30EBD0054E506 /* BlooToothConstants.swift */,
+				DCC516461B74EFFD0097F3B9 /* BlooToothManager.swift */,
+				DC31F9EF1BC69D0B00C227CE /* BlooToothPeripheralManager.swift */,
+				DC08BBE21BCC4D5500017C0D /* BlooToothGenericCell.swift */,
+				DC126BE91BC46BF60054E506 /* ChatTableViewController.swift */,
+				DCC516421B74EFE70097F3B9 /* DevicesDataSource.swift */,
+				DC2760831BB0B12600664212 /* DeviceDetailsViewController.swift */,
+				DCC5163E1B74EF570097F3B9 /* DevicesTableViewController.swift */,
+				DC2760851BB1A53D00664212 /* IntroViewController.swift */,
+				DCC516141B74E4D40097F3B9 /* Main.storyboard */,
+				DCC516171B74E4D40097F3B9 /* Assets.xcassets */,
+				DCC516191B74E4D40097F3B9 /* LaunchScreen.storyboard */,
+				DCC5161C1B74E4D40097F3B9 /* Info.plist */,
+			);
+			path = BlooTooth;
+			sourceTree = "<group>";
+		};
+		DCC516241B74E4D40097F3B9 /* BlooToothTests */ = {
+			isa = PBXGroup;
+			children = (
+				DC2760941BBC628900664212 /* BlooToothManagerTest.swift */,
+				DCC516251B74E4D40097F3B9 /* BlooToothTests.swift */,
+				DC27608F1BBAB12700664212 /* BlooToothDeviceTest.swift */,
+				DCC516271B74E4D40097F3B9 /* Info.plist */,
+			);
+			path = BlooToothTests;
+			sourceTree = "<group>";
+		};
+		DCC5162F1B74E4D40097F3B9 /* BlooToothUITests */ = {
+			isa = PBXGroup;
+			children = (
+				DCC516301B74E4D40097F3B9 /* BlooToothUITests.swift */,
+				DCC516321B74E4D40097F3B9 /* Info.plist */,
+			);
+			path = BlooToothUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DCC5160C1B74E4D40097F3B9 /* BlooTooth */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DCC516351B74E4D40097F3B9 /* Build configuration list for PBXNativeTarget "BlooTooth" */;
+			buildPhases = (
+				DCC516091B74E4D40097F3B9 /* Sources */,
+				DCC5160A1B74E4D40097F3B9 /* Frameworks */,
+				DCC5160B1B74E4D40097F3B9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BlooTooth;
+			productName = BlooTooth;
+			productReference = DCC5160D1B74E4D40097F3B9 /* BlooTooth.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DCC516201B74E4D40097F3B9 /* BlooToothTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DCC516381B74E4D40097F3B9 /* Build configuration list for PBXNativeTarget "BlooToothTests" */;
+			buildPhases = (
+				DCC5161D1B74E4D40097F3B9 /* Sources */,
+				DCC5161E1B74E4D40097F3B9 /* Frameworks */,
+				DCC5161F1B74E4D40097F3B9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DCC516231B74E4D40097F3B9 /* PBXTargetDependency */,
+			);
+			name = BlooToothTests;
+			productName = BlooToothTests;
+			productReference = DCC516211B74E4D40097F3B9 /* BlooToothTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		DCC5162B1B74E4D40097F3B9 /* BlooToothUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DCC5163B1B74E4D40097F3B9 /* Build configuration list for PBXNativeTarget "BlooToothUITests" */;
+			buildPhases = (
+				DCC516281B74E4D40097F3B9 /* Sources */,
+				DCC516291B74E4D40097F3B9 /* Frameworks */,
+				DCC5162A1B74E4D40097F3B9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DCC5162E1B74E4D40097F3B9 /* PBXTargetDependency */,
+			);
+			name = BlooToothUITests;
+			productName = BlooToothUITests;
+			productReference = DCC5162C1B74E4D40097F3B9 /* BlooToothUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DCC516051B74E4D40097F3B9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = "V8 Logic";
+				TargetAttributes = {
+					DCC5160C1B74E4D40097F3B9 = {
+						CreatedOnToolsVersion = 7.0;
+						DevelopmentTeam = U47EA53RZE;
+					};
+					DCC516201B74E4D40097F3B9 = {
+						CreatedOnToolsVersion = 7.0;
+						TestTargetID = DCC5160C1B74E4D40097F3B9;
+					};
+					DCC5162B1B74E4D40097F3B9 = {
+						CreatedOnToolsVersion = 7.0;
+						TestTargetID = DCC5160C1B74E4D40097F3B9;
+					};
+				};
+			};
+			buildConfigurationList = DCC516081B74E4D40097F3B9 /* Build configuration list for PBXProject "BlooTooth" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = DCC516041B74E4D40097F3B9;
+			productRefGroup = DCC5160E1B74E4D40097F3B9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DCC5160C1B74E4D40097F3B9 /* BlooTooth */,
+				DCC516201B74E4D40097F3B9 /* BlooToothTests */,
+				DCC5162B1B74E4D40097F3B9 /* BlooToothUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DCC5160B1B74E4D40097F3B9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCC5161B1B74E4D40097F3B9 /* LaunchScreen.storyboard in Resources */,
+				DCC516181B74E4D40097F3B9 /* Assets.xcassets in Resources */,
+				DCC516161B74E4D40097F3B9 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DCC5161F1B74E4D40097F3B9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DCC5162A1B74E4D40097F3B9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DCC516091B74E4D40097F3B9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DC126BE61BC30EBD0054E506 /* BlooToothConstants.swift in Sources */,
+				DCC516431B74EFE70097F3B9 /* DevicesDataSource.swift in Sources */,
+				DC126BEA1BC46BF60054E506 /* ChatTableViewController.swift in Sources */,
+				DC08BBE31BCC4D5500017C0D /* BlooToothGenericCell.swift in Sources */,
+				DC2760861BB1A53D00664212 /* IntroViewController.swift in Sources */,
+				DCC516111B74E4D40097F3B9 /* AppDelegate.swift in Sources */,
+				DC2760841BB0B12600664212 /* DeviceDetailsViewController.swift in Sources */,
+				DC31F9F01BC69D0B00C227CE /* BlooToothPeripheralManager.swift in Sources */,
+				DCC516471B74EFFD0097F3B9 /* BlooToothManager.swift in Sources */,
+				DCC5163F1B74EF570097F3B9 /* DevicesTableViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DCC5161D1B74E4D40097F3B9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DC126BEB1BC46BF60054E506 /* ChatTableViewController.swift in Sources */,
+				DCC516441B74EFE70097F3B9 /* DevicesDataSource.swift in Sources */,
+				DCC516401B74EF570097F3B9 /* DevicesTableViewController.swift in Sources */,
+				DC2760871BB1A72B00664212 /* DeviceDetailsViewController.swift in Sources */,
+				DC2760951BBC628900664212 /* BlooToothManagerTest.swift in Sources */,
+				DC126BE71BC30EBD0054E506 /* BlooToothConstants.swift in Sources */,
+				DC31F9F11BC69D0B00C227CE /* BlooToothPeripheralManager.swift in Sources */,
+				DCC516481B74EFFD0097F3B9 /* BlooToothManager.swift in Sources */,
+				DCC516261B74E4D40097F3B9 /* BlooToothTests.swift in Sources */,
+				DC2760901BBAB12700664212 /* BlooToothDeviceTest.swift in Sources */,
+				DC08BBE41BCC4D5500017C0D /* BlooToothGenericCell.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DCC516281B74E4D40097F3B9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCC516451B74EFE70097F3B9 /* DevicesDataSource.swift in Sources */,
+				DC126BE81BC30EBD0054E506 /* BlooToothConstants.swift in Sources */,
+				DC31F9F21BC69D0B00C227CE /* BlooToothPeripheralManager.swift in Sources */,
+				DC08BBE51BCC4D5500017C0D /* BlooToothGenericCell.swift in Sources */,
+				DCC516411B74EF570097F3B9 /* DevicesTableViewController.swift in Sources */,
+				DC2760881BB1A72C00664212 /* DeviceDetailsViewController.swift in Sources */,
+				DCC516491B74EFFD0097F3B9 /* BlooToothManager.swift in Sources */,
+				DCC516311B74E4D40097F3B9 /* BlooToothUITests.swift in Sources */,
+				DC126BEC1BC46BF60054E506 /* ChatTableViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DCC516231B74E4D40097F3B9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DCC5160C1B74E4D40097F3B9 /* BlooTooth */;
+			targetProxy = DCC516221B74E4D40097F3B9 /* PBXContainerItemProxy */;
+		};
+		DCC5162E1B74E4D40097F3B9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DCC5160C1B74E4D40097F3B9 /* BlooTooth */;
+			targetProxy = DCC5162D1B74E4D40097F3B9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		DCC516141B74E4D40097F3B9 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DCC516151B74E4D40097F3B9 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		DCC516191B74E4D40097F3B9 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DCC5161A1B74E4D40097F3B9 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		DCC516331B74E4D40097F3B9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		DCC516341B74E4D40097F3B9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		DCC516361B74E4D40097F3B9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = BlooTooth/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.v8logic.BlooTooth;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+			};
+			name = Debug;
+		};
+		DCC516371B74E4D40097F3B9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = BlooTooth/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.v8logic.BlooTooth;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+			};
+			name = Release;
+		};
+		DCC516391B74E4D40097F3B9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = BlooToothTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.v8logic.BlooToothTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BlooTooth.app/BlooTooth";
+			};
+			name = Debug;
+		};
+		DCC5163A1B74E4D40097F3B9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = BlooToothTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.v8logic.BlooToothTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BlooTooth.app/BlooTooth";
+			};
+			name = Release;
+		};
+		DCC5163C1B74E4D40097F3B9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = BlooToothUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.v8logic.BlooToothUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = BlooTooth;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		DCC5163D1B74E4D40097F3B9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = BlooToothUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.v8logic.BlooToothUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = BlooTooth;
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DCC516081B74E4D40097F3B9 /* Build configuration list for PBXProject "BlooTooth" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DCC516331B74E4D40097F3B9 /* Debug */,
+				DCC516341B74E4D40097F3B9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DCC516351B74E4D40097F3B9 /* Build configuration list for PBXNativeTarget "BlooTooth" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DCC516361B74E4D40097F3B9 /* Debug */,
+				DCC516371B74E4D40097F3B9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DCC516381B74E4D40097F3B9 /* Build configuration list for PBXNativeTarget "BlooToothTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DCC516391B74E4D40097F3B9 /* Debug */,
+				DCC5163A1B74E4D40097F3B9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DCC5163B1B74E4D40097F3B9 /* Build configuration list for PBXNativeTarget "BlooToothUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DCC5163C1B74E4D40097F3B9 /* Debug */,
+				DCC5163D1B74E4D40097F3B9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DCC516051B74E4D40097F3B9 /* Project object */;
+}
