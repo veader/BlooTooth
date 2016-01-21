@@ -142,16 +142,16 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="55" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gYz-9s-ynT">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="69" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gYz-9s-ynT">
                                 <rect key="frame" x="0.0" y="197" width="600" height="402.5"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="btGenericCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="btGenericCell" rowHeight="55" id="gI9-Im-2gO" userLabel="btGenericCell" customClass="BlooToothGenericCell" customModule="BlooTooth" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="600" height="55"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="btGenericCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="btGenericCell" rowHeight="69" id="gI9-Im-2gO" userLabel="btGenericCell" customClass="BlooToothGenericCell" customModule="BlooTooth" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="600" height="69"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gI9-Im-2gO" id="6HI-PY-urT">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="54.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="68.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view alpha="0.75" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9fj-ar-g4g">
@@ -187,14 +187,21 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="751" text="Service UUID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ICQ-Pu-cKL">
-                                                    <rect key="frame" x="50" y="30" width="531" height="16.5"/>
+                                                    <rect key="frame" x="50" y="30" width="531" height="13.5"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="751" text="Value for Attribute" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9B3-9A-eH5">
+                                                    <rect key="frame" x="50" y="46.5" width="531" height="14"/>
+                                                    <animations/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4pJ-d5-zMY">
-                                                    <rect key="frame" x="581" y="17" width="11" height="20.5"/>
+                                                    <rect key="frame" x="581" y="24" width="11" height="20.5"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -207,19 +214,26 @@
                                                 <constraint firstItem="4pJ-d5-zMY" firstAttribute="centerY" secondItem="6HI-PY-urT" secondAttribute="centerY" id="FTe-KJ-Gj6"/>
                                                 <constraint firstItem="ICQ-Pu-cKL" firstAttribute="top" secondItem="F1p-7t-pJd" secondAttribute="bottom" constant="3" id="FYR-ND-fzS"/>
                                                 <constraint firstItem="9fj-ar-g4g" firstAttribute="centerY" secondItem="6HI-PY-urT" secondAttribute="centerY" id="IQg-2u-BWo"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="9B3-9A-eH5" secondAttribute="bottom" id="OBc-vQ-Vr2"/>
                                                 <constraint firstAttribute="topMargin" secondItem="F1p-7t-pJd" secondAttribute="top" id="Txk-HV-2qV"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="ICQ-Pu-cKL" secondAttribute="trailing" priority="250" constant="472" id="VDX-eI-Klr"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="4pJ-d5-zMY" secondAttribute="trailing" id="YKc-64-1DB"/>
                                                 <constraint firstItem="F1p-7t-pJd" firstAttribute="leading" secondItem="9fj-ar-g4g" secondAttribute="trailing" constant="6" id="ebe-Xp-8kN"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="F1p-7t-pJd" secondAttribute="trailing" priority="250" constant="441" id="fzi-8h-HaF"/>
+                                                <constraint firstItem="9B3-9A-eH5" firstAttribute="top" secondItem="ICQ-Pu-cKL" secondAttribute="bottom" constant="3" id="gJt-AE-eHJ"/>
+                                                <constraint firstItem="9fj-ar-g4g" firstAttribute="top" secondItem="6HI-PY-urT" secondAttribute="topMargin" constant="3" id="i4X-nR-ojT"/>
                                                 <constraint firstItem="4pJ-d5-zMY" firstAttribute="leading" secondItem="ICQ-Pu-cKL" secondAttribute="trailing" priority="750" id="iLW-Ig-g7w"/>
                                                 <constraint firstItem="ICQ-Pu-cKL" firstAttribute="leading" secondItem="9fj-ar-g4g" secondAttribute="trailing" constant="6" id="j7c-Ul-01c"/>
                                                 <constraint firstItem="4pJ-d5-zMY" firstAttribute="leading" secondItem="F1p-7t-pJd" secondAttribute="trailing" priority="750" id="mTS-YB-eQa"/>
                                                 <constraint firstItem="9fj-ar-g4g" firstAttribute="leading" secondItem="6HI-PY-urT" secondAttribute="leadingMargin" constant="4" id="od1-0X-xl9"/>
+                                                <constraint firstItem="9B3-9A-eH5" firstAttribute="leading" secondItem="ICQ-Pu-cKL" secondAttribute="leading" id="txD-PP-0QS"/>
+                                                <constraint firstItem="9B3-9A-eH5" firstAttribute="trailing" secondItem="ICQ-Pu-cKL" secondAttribute="trailing" id="xTb-Hf-5bW"/>
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
+                                                    <exclude reference="IQg-2u-BWo"/>
                                                     <exclude reference="fzi-8h-HaF"/>
+                                                    <exclude reference="1c7-N6-WNJ"/>
                                                     <exclude reference="VDX-eI-Klr"/>
                                                 </mask>
                                             </variation>
@@ -232,6 +246,7 @@
                                             <outlet property="leftConstraint" destination="od1-0X-xl9" id="X2j-dW-Au9"/>
                                             <outlet property="nameLabel" destination="F1p-7t-pJd" id="GXt-4k-NFd"/>
                                             <outlet property="uuidLabel" destination="ICQ-Pu-cKL" id="30P-b2-rcL"/>
+                                            <outlet property="valueLabel" destination="9B3-9A-eH5" id="DjK-Ze-n9j"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

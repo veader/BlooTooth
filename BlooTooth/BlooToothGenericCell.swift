@@ -22,9 +22,12 @@ class BlooToothGenericCell: UITableViewCell {
 
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var uuidLabel: UILabel!
+    @IBOutlet weak var valueLabel: UILabel!
     @IBOutlet weak var expandedIndicationLabel: UILabel!
+
     @IBOutlet weak var genericTypeLabel: UILabel!
     @IBOutlet weak var genericTypeView: UIView!
+
     @IBOutlet weak var leftConstraint: NSLayoutConstraint!
 
     var service: CBService? {
@@ -84,6 +87,7 @@ class BlooToothGenericCell: UITableViewCell {
         // self.nameLabel.text = BlooToothManager.sharedInstance.serviceNameFromUUID(service.UUID.UUIDString)
         self.nameLabel.text = service.friendlyName()
         self.uuidLabel.text = service.UUID.UUIDString
+        self.valueLabel.hidden = true
         setType(.serviceCell)
     }
 
@@ -94,6 +98,12 @@ class BlooToothGenericCell: UITableViewCell {
         var finalString = "Notifying: \(char.isNotifying == true ? checkMark : xCheckMark)  |  UUID: "
         finalString.appendContentsOf(char.UUID.UUIDString)
         self.uuidLabel.text = finalString
+        if let valueString = stringForValue(char.value) {
+            self.valueLabel.hidden = false
+            self.valueLabel.text = valueString
+        } else {
+            self.valueLabel.hidden = true
+        }
         setType(.characteristicCell)
     }
 
@@ -102,6 +112,13 @@ class BlooToothGenericCell: UITableViewCell {
         // self.nameLabel.text = descriptor.description
         self.nameLabel.text = descriptor.friendlyName()
         self.uuidLabel.text = descriptor.UUID.UUIDString
+        self.valueLabel.hidden = false
+        if let valueString = stringForValue(descriptor.value) {
+            self.valueLabel.hidden = false
+            self.valueLabel.text = valueString
+        } else {
+            self.valueLabel.hidden = true
+        }
         setType(.descriptorCell)
     }
 
@@ -110,6 +127,19 @@ class BlooToothGenericCell: UITableViewCell {
         let marginSize: CGFloat = 4.0
         let padding: CGFloat = CGFloat(numberOfIndents - 1)
         self.leftConstraint.constant = marginSize + (padding * paddingSize)
+    }
+
+    func stringForValue(value: AnyObject?) -> String? {
+        guard let data = value as? NSData else { return nil }
+        let string = String(data: data, encoding: NSUTF8StringEncoding)
+        if string?.isEmpty == true || string == "\0" {
+            let result = NSKeyedUnarchiver.unarchiveObjectWithData(data)
+            print(data)
+            print(result)
+            return nil
+        } else {
+            return string
+        }
     }
 
     func setType(type: BTGenericCellType) {

@@ -120,7 +120,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
 
         loadServices()
         setupDeviceLabels()
-        setStatusText("Investigating Device...")
+        setStatusText("Investigating...")
     }
 
     @objc func peripheralDisconnected(notification: NSNotification) {
