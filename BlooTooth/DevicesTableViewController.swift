@@ -15,15 +15,13 @@ class DevicesTableViewController: UITableViewController {
     @IBOutlet weak var scanButton : UIBarButtonItem!
     @IBOutlet weak var stopButton : UIBarButtonItem!
     
-    // MARK: Lifecycle Methods
+    // MARK: - Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.tableView.dataSource = self.devicesDataSource
 
-        self.stopButton.enabled = false
-
-        startBlooToothScan(nil)
+        stopScan()
 
         self.clearsSelectionOnViewWillAppear = true
 
@@ -47,12 +45,12 @@ class DevicesTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    // MARK: UI Interaction Methods
+    // MARK: - UI Interaction Methods
     @IBAction func startBlooToothScan(sender: UIButton?) {
         BlooToothManager.sharedInstance.startScan()
-        self.scanButton?.enabled = false
-        self.stopButton?.enabled = true
-        
+        self.stopButton.enabled = true
+        self.scanButton.enabled = false
+
         NSTimer.scheduledTimerWithTimeInterval(20, target: self, selector: "stopScan", userInfo: nil, repeats: false)
     }
     
@@ -62,8 +60,8 @@ class DevicesTableViewController: UITableViewController {
     
     func stopScan() {
         BlooToothManager.sharedInstance.stopScan()
-        self.stopButton?.enabled = false
-        self.scanButton?.enabled = true
+        self.stopButton.enabled = false
+        self.scanButton.enabled = true
     }
 
     // MARK: - Notification Response Methods

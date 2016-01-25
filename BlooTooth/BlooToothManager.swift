@@ -96,6 +96,7 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
     // MARK: - Scan Methods
     func startScan() {
         print("BT: starting scan...")
+        self.peripherals = [CBPeripheral]() // clear out old peripherals
         self.centralManager.scanForPeripheralsWithServices(nil, options: nil)
     }
     
