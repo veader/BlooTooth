@@ -28,6 +28,8 @@ class BlooToothGenericCell: UITableViewCell {
     @IBOutlet weak var genericTypeLabel: UILabel!
     @IBOutlet weak var genericTypeView: UIView!
 
+    @IBOutlet weak var infoButton: UIButton!
+
     @IBOutlet weak var leftConstraint: NSLayoutConstraint!
 
     var service: CBService? {
@@ -88,7 +90,18 @@ class BlooToothGenericCell: UITableViewCell {
         self.nameLabel.text = service.friendlyName()
         self.uuidLabel.text = service.UUID.UUIDString
         self.valueLabel.hidden = true
+        self.infoButton.hidden = true
         setType(.serviceCell)
+
+        if let characteristics = service.characteristics {
+            if characteristics.count > 0 {
+                self.expandedIndicationLabel.hidden = false
+            } else {
+                self.expandedIndicationLabel.hidden = true
+            }
+        } else {
+            self.expandedIndicationLabel.hidden = true
+        }
     }
 
     func setCharacteristicInfo() {
@@ -104,7 +117,18 @@ class BlooToothGenericCell: UITableViewCell {
         } else {
             self.valueLabel.hidden = true
         }
+        self.infoButton.hidden = false
         setType(.characteristicCell)
+
+        if let descriptors = char.descriptors {
+            if descriptors.count > 0 {
+                self.expandedIndicationLabel.hidden = false
+            } else {
+                self.expandedIndicationLabel.hidden = true
+            }
+        } else {
+            self.expandedIndicationLabel.hidden = true
+        }
     }
 
     func setDescriptorInfo() {
@@ -119,6 +143,8 @@ class BlooToothGenericCell: UITableViewCell {
         } else {
             self.valueLabel.hidden = true
         }
+        self.infoButton.hidden = true
+        self.expandedIndicationLabel.hidden = true
         setType(.descriptorCell)
     }
 

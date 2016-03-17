@@ -19,21 +19,40 @@ enum BlooToothNotifications: String {
     case ServiceCharacteristicsUpdated = "PeripheralCharacteristicsUpdated"
     case CharacteristicDescriptorsUpdated = "CharacteristicDescriptorsUpdated"
     case PeripheralInvestigationFinished = "PeripheralInvestigationFinished"
+    case CharacteristicDataUpdated = "CharacteristicDataUpdated"
 }
 
 // extend CBService, CBCharacteristic and CBDescriptor
 extension CBAttribute {
+
     func friendlyName() -> String? {
-        var outputString: String = ""
-        print(self, separator: "", terminator: "", toStream: &outputString)
-        let pieces = outputString.componentsSeparatedByString(", ")
-        let uuidPieces = pieces.filter({ $0.hasPrefix("UUID") })
-        if uuidPieces.count > 0 {
-            let thisUUID = uuidPieces[0]
-            let pieces = thisUUID.componentsSeparatedByString(" = ")
-            return pieces[1].stringByReplacingOccurrencesOfString(">", withString: "")
+        // arduino 101 examples
+        let gyroService = "7C27A67C-8E46-4AE6-8BC0-8A0865E7293F"
+        let gyroXChar = "FF125EA1-E5B1-4323-9913-957826EB5059"
+        let gyroYChar = "24676112-6E73-4159-90E1-147288DD11DD"
+        let gyroZChar = "593DCD1B-749B-4697-8DC3-709EED98887B"
+
+        switch self.UUID.UUIDString {
+        case gyroService:
+            return "Gyro"
+        case gyroXChar:
+            return "Gyro X"
+        case gyroYChar:
+            return "Gyro Y"
+        case gyroZChar:
+            return "Gyro Z"
+        default:
+            var outputString: String = ""
+            print(self, separator: "", terminator: "", toStream: &outputString)
+            let pieces = outputString.componentsSeparatedByString(", ")
+            let uuidPieces = pieces.filter({ $0.hasPrefix("UUID") })
+            if uuidPieces.count > 0 {
+                let thisUUID = uuidPieces[0]
+                let pieces = thisUUID.componentsSeparatedByString(" = ")
+                return pieces[1].stringByReplacingOccurrencesOfString(">", withString: "")
+            }
+            return ""
         }
-        return ""
     }
 }
 
@@ -168,6 +187,15 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
         }
     }
 
+    func subscribeToUpdatesForCharacteristic(characteristic: CBCharacteristic, peripheral: CBPeripheral) {
+        peripheral.setNotifyValue(true, forCharacteristic: characteristic)
+    }
+
+    func unsubscribeToUpdatesForCharacteristic(characteristic: CBCharacteristic, peripheral: CBPeripheral) {
+        // guard characteristic.isNotifying == true else { return }
+        peripheral.setNotifyValue(false, forCharacteristic: characteristic)
+    }
+
     func discoverDescriptorsForCharacteristics(peripheral: CBPeripheral, characteristics: [CBCharacteristic]) {
         print("BT: Discovering desriptors for characteristics")
         peripheral.delegate = self
@@ -297,15 +325,15 @@ class BlooToothManager : NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
         print("peripheral:didUpdateValueForCharacteristic:")
-        // TODO: notify, etc
         print(characteristic)
+        notifyWithObject(.CharacteristicDataUpdated, object: characteristic)
         decrementInvestigationCallsForPeripheral(peripheral)
     }
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForDescriptor descriptor: CBDescriptor, error: NSError?) {
         print("peripheral:didUpdateValueForDescriptor:")
-        // TODO: notify, etc
         print(descriptor)
+        // TODO: notify, etc
         decrementInvestigationCallsForPeripheral(peripheral)
     }
     

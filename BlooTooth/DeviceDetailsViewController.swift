@@ -54,6 +54,9 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+//        if let p = self.peripheral {
+//            BlooToothManager.sharedInstance.disconnectFromPeripheral(p)
+//        }
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
@@ -159,31 +162,33 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
             case .serviceCell:
                 let service = (cellItem.cellObject as! CBService)
                 removeChildRowsForService(service)
+                toggleExpandAndReload(cellItem, indexPath: indexPath)
             case .characteristicCell:
                 let characteristic = (cellItem.cellObject as! CBCharacteristic)
                 removeChildRowsForCharacteristic(characteristic)
+                toggleExpandAndReload(cellItem, indexPath: indexPath)
             case .descriptorCell:
                 break
             }
         } else {
-            // expand next layer
-            switch cellItem.cellType {
-            case .serviceCell:
-                let service = (cellItem.cellObject as! CBService)
-                addChildRowsForService(service, atIndexPath: indexPath)
-            case .characteristicCell:
-                let characteristic = (cellItem.cellObject as! CBCharacteristic)
-                addChildRowsForCharacteristic(characteristic, atIndexPath: indexPath)
-            case .descriptorCell:
-                break
+            if cellCanExpand(cellItem) == true {
+                // expand next layer
+                switch cellItem.cellType {
+                case .serviceCell:
+                    let service = (cellItem.cellObject as! CBService)
+                    addChildRowsForService(service, atIndexPath: indexPath)
+                    toggleExpandAndReload(cellItem, indexPath: indexPath)
+                case .characteristicCell:
+                    let characteristic = (cellItem.cellObject as! CBCharacteristic)
+                    addChildRowsForCharacteristic(characteristic, atIndexPath: indexPath)
+                    toggleExpandAndReload(cellItem, indexPath: indexPath)
+                case .descriptorCell:
+                    break
+                }
+            } else {
+                self.tableView.deselectRowAtIndexPath(indexPath, animated: false)
             }
         }
-
-        // should be safe since we have the guard above
-        self.cellObjects[indexPath.row].expanded = !cellItem.expanded
-
-        // TODO: replace with real diff
-        self.tableView.reloadData()
     }
 
     func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
@@ -225,6 +230,41 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
         guard self.cellObjects.count >= indexPath.row else { return nil }
         return self.cellObjects[indexPath.row]
     }
+
+    func toggleExpandAndReload(cellObject: GenericCellType, indexPath: NSIndexPath) {
+        self.cellObjects[indexPath.row].expanded = !cellObject.expanded
+        self.tableView.reloadData()
+    }
+
+    func cellCanExpand(cellObject: GenericCellType) -> Bool {
+        var canExpand = false
+
+        switch cellObject.cellType {
+        case .serviceCell:
+            let service = (cellObject.cellObject as! CBService)
+            if let characteristics = service.characteristics {
+                if characteristics.count > 0 {
+                    canExpand = true
+                }
+            }
+            if let services = service.includedServices {
+                if services.count > 0 {
+                    canExpand = true
+                }
+            }
+        case .characteristicCell:
+            let characteristic = (cellObject.cellObject as! CBCharacteristic)
+            if let descriptors = characteristic.descriptors {
+                if descriptors.count > 0 {
+                    canExpand = true
+                }
+            }
+        case .descriptorCell:
+            break
+        }
+        return canExpand
+    }
+
 
     func indexOfCellObjectForObject(obj: AnyObject, theType: BTGenericCellType) -> Int? {
         return self.cellObjects.indexOf( {
@@ -283,5 +323,38 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
             }
         }
     }
+    
+    // MARK: - Navigation
+//    override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
+//        guard let ident = identifier else { return false }
+//        if ident == "btCharSegue" {
+//            let button = sender as! UIButton
+//
+//            if let indexPath = self.tableView.indexPathForCell(cell) {
+//                if let cellItem = cellObjectForIndexPath(indexPath) {
+//                    if cellItem.cellType == .characteristicCell {
+//                        return true
+//                    }
+//                }
+//            }
+//        }
+//        return false
+//    }
 
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "btCharSegue" {
+            let button = sender as! UIButton
+            // sorry, super dirty digging up the superview tree... but ¯\_(ツ)_/¯
+            let cell = button.superview?.superview as! BlooToothGenericCell
+            if let indexPath = self.tableView.indexPathForCell(cell) {
+                if let cellItem = cellObjectForIndexPath(indexPath) {
+                    let dest = segue.destinationViewController as! CharacteristicViewController
+                    dest.peripheral = self.peripheral
+                    dest.characteristic = cellItem.cellObject as! CBCharacteristic
+                }
+            }
+        } else {
+            print("Unknown segue: \(segue.identifier)")
+        }   
+    }
 }
